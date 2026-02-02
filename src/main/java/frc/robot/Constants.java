@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -19,5 +21,22 @@ public final class Constants {
 
     public static class SystemConstants {
         public static final boolean kEnableSignalLogger = false;
+    }
+
+    public static class GameConstants {
+        public static Alliance teamColor = Alliance.Blue;
+        // public static AutonSides autonSide = AutonSides.Left;
+        public static boolean rearRightCameraEnabledAuton = false;
+        
+        public enum TeamColors {
+            kTeamColorBlue("BLUE"),
+            kTeamColorRed("RED");
+
+            public final String color;
+
+            private TeamColors(String color) {
+                this.color = color;
+            }
+        }
     }
 }
