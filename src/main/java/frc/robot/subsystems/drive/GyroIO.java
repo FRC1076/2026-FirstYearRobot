@@ -28,5 +28,5 @@ public interface GyroIO {
 
     /** Reset the current position of the gyro to forward */
     public abstract void reset();
-
+    
 }
