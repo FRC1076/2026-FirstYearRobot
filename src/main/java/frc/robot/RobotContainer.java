@@ -21,7 +21,7 @@ import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.Common.Drive;
 import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.ModuleConfig;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIOPigeon;
+import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOHardware;
 import frc.robot.subsystems.fuel.FuelSubsystem;
@@ -65,7 +65,7 @@ public class RobotContainer {
     * The container for the robot. Contains subsystems, OI devices, and commands.
     */
     public RobotContainer() {
-        driveSubsystem = new DriveSubsystem(new GyroIOPigeon(), new ModuleIOHardware(ModuleConfig.FrontLeft), new ModuleIOHardware(ModuleConfig.FrontRight), new ModuleIOHardware(ModuleConfig.RearLeft), new ModuleIOHardware(ModuleConfig.RearRight));
+        driveSubsystem = new DriveSubsystem(new GyroIONavX(), new ModuleIOHardware(ModuleConfig.FrontLeft), new ModuleIOHardware(ModuleConfig.FrontRight), new ModuleIOHardware(ModuleConfig.RearLeft), new ModuleIOHardware(ModuleConfig.RearRight));
         fuelSubsystem = new FuelSubsystem();
         climberSubsystem = new ClimberSubsystem();
 
