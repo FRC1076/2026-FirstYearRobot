@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public final class Constants {
     public static class OperatorConstants {
         public static final int kDriverControllerPort = 0;
-        public static final int kOperatorControllerPort = 0;
+        public static final int kOperatorControllerPort = 1;
     }
 
     public static class SystemConstants {
@@ -42,8 +42,8 @@ public final class Constants {
 
     public static final class FuelConstants {
         // Motor controller IDs for Fuel Mechanism motors
-        public static final int LEFT_INTAKE_LAUNCHER_MOTOR_ID = 5;
-        public static final int RIGHT_INTAKE_LAUNCHER_MOTOR_ID = 6;
+        public static final int LEFT_INTAKE_LAUNCHER_MOTOR_ID = 35;
+        public static final int RIGHT_INTAKE_LAUNCHER_MOTOR_ID = 36;
         public static final int INDEXER_MOTOR_ID = 8;
 
         // Current limit for fuel mechanism motors.
@@ -64,7 +64,7 @@ public final class Constants {
 
     public static final class ClimbConstants {
         // Motor controller IDs for Climb motor
-        public static final int CLIMBER_MOTOR_ID = 7;
+        public static final int CLIMBER_MOTOR_ID = 37;
 
         // Current limit for climb motor
         public static final int CLIMBER_MOTOR_CURRENT_LIMIT = 40;
