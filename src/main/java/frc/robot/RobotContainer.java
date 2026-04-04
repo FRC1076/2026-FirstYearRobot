@@ -11,6 +11,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.climber.ClimbDown;
 import frc.robot.commands.climber.ClimbUp;
 import frc.robot.commands.drive.TeleopDriveCommand;
+import frc.robot.commands.drive.TeleopDriveCommandV2;
 import frc.robot.commands.fuel.Eject;
 import frc.robot.commands.fuel.Intake;
 import frc.robot.commands.fuel.LaunchSequence;
@@ -52,6 +53,8 @@ public class RobotContainer {
     private final FuelSubsystem fuelSubsystem;
     private final ClimberSubsystem climberSubsystem;
 
+    private final TeleopDriveCommandV2 teleopDriveCommand;
+
     // The driver's controller
     private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
@@ -65,18 +68,30 @@ public class RobotContainer {
     * The container for the robot. Contains subsystems, OI devices, and commands.
     */
     public RobotContainer() {
-        driveSubsystem = new DriveSubsystem(new GyroIONavX(), new ModuleIOHardware(ModuleConfig.FrontLeft), new ModuleIOHardware(ModuleConfig.FrontRight), new ModuleIOHardware(ModuleConfig.RearLeft), new ModuleIOHardware(ModuleConfig.RearRight));
+        driveSubsystem = new DriveSubsystem(
+            new GyroIONavX(),
+            new ModuleIOHardware(ModuleConfig.FrontLeft),
+            new ModuleIOHardware(ModuleConfig.FrontRight),
+            new ModuleIOHardware(ModuleConfig.RearLeft),
+            new ModuleIOHardware(ModuleConfig.RearRight)
+        );
         fuelSubsystem = new FuelSubsystem();
         climberSubsystem = new ClimberSubsystem();
-
-
-        
 
         // Set the options to show up in the Dashboard for selecting auto modes. If you
         // add additional auto modes you can add additional lines here with
         // autoChooser.addOption
 
         // autoChooser.setDefaultOption("Autonomous", new Auto(driveSubsystem, fuelSubsystem)); <-- may add back in later
+
+        teleopDriveCommand = driveSubsystem.CommandBuilder.driveTeleop(
+            () -> -m_driverController.getLeftY(), 
+            () -> -m_driverController.getLeftX(), 
+            () -> -m_driverController.getRightX(),
+            1,
+            1, 
+            false
+        );
 
         configureBindings();
     }
@@ -94,12 +109,16 @@ public class RobotContainer {
     */
 
     private void configureBindings() {
+        driveSubsystem.setDefaultCommand(teleopDriveCommand);
+
+        m_driverController.leftBumper().whileTrue(teleopDriveCommand.applyDoubleClutch());
+        m_driverController.rightBumper().whileTrue(teleopDriveCommand.applySingleClutch());
 
         // While the left bumper on operator controller is held, intake Fuel
-        m_driverController.leftBumper().whileTrue(new Intake(fuelSubsystem));
+        m_driverController.leftTrigger().whileTrue(new Intake(fuelSubsystem));
         // While the right bumper on the operator controller is held, spin up for 1
         // second, then launch fuel. When the button is released, stop.
-        m_driverController.rightBumper().whileTrue(new LaunchSequence(fuelSubsystem));
+        m_driverController.rightTrigger().whileTrue(new LaunchSequence(fuelSubsystem));
         // While the A button is held on the operator controller, eject fuel back out
         // the intake
         m_driverController.a().whileTrue(new Eject(fuelSubsystem));
