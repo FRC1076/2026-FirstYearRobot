@@ -15,7 +15,7 @@ public class DriveConstants {
     public static final double doubleClutchTranslationFactor = 0.35;
     public static final double doubleClutchRotationFactor = 0.35;
 
-    public static final int odometryFrequencyHz = 100;
+    public static final int odometryFrequencyHz = 50;
     public static final double wheelBase = Units.inchesToMeters(27.5);
     public static final double trackWidth = Units.inchesToMeters(27.5);
     //public static final double wheelRadius = 0.0508; //Meters

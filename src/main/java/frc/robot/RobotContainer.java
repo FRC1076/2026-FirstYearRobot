@@ -50,8 +50,8 @@ public class RobotContainer {
     private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
     private final DriveSubsystem driveSubsystem;
-    private final FuelSubsystem fuelSubsystem;
-    private final ClimberSubsystem climberSubsystem;
+    //private final FuelSubsystem fuelSubsystem;
+    //private final ClimberSubsystem climberSubsystem;
 
     private final TeleopDriveCommandV2 teleopDriveCommand;
 
@@ -75,8 +75,8 @@ public class RobotContainer {
             new ModuleIOHardware(ModuleConfig.RearLeft),
             new ModuleIOHardware(ModuleConfig.RearRight)
         );
-        fuelSubsystem = new FuelSubsystem();
-        climberSubsystem = new ClimberSubsystem();
+        //fuelSubsystem = new FuelSubsystem();
+        //climberSubsystem = new ClimberSubsystem();
 
         // Set the options to show up in the Dashboard for selecting auto modes. If you
         // add additional auto modes you can add additional lines here with
@@ -115,17 +115,26 @@ public class RobotContainer {
         m_driverController.rightBumper().whileTrue(teleopDriveCommand.applySingleClutch());
 
         // While the left bumper on operator controller is held, intake Fuel
-        m_driverController.leftTrigger().whileTrue(new Intake(fuelSubsystem));
+
+        //m_driverController.leftTrigger().whileTrue(new Intake(fuelSubsystem));
+
         // While the right bumper on the operator controller is held, spin up for 1
         // second, then launch fuel. When the button is released, stop.
-        m_driverController.rightTrigger().whileTrue(new LaunchSequence(fuelSubsystem));
+
+        //m_driverController.rightTrigger().whileTrue(new LaunchSequence(fuelSubsystem));
+
         // While the A button is held on the operator controller, eject fuel back out
         // the intake
-        m_driverController.a().whileTrue(new Eject(fuelSubsystem));
+
+        //m_driverController.a().whileTrue(new Eject(fuelSubsystem));
+
        // While the down arrow on the directional pad is held it will unclimb the robot
-        m_driverController.povDown().whileTrue(new ClimbDown(climberSubsystem));
+
+        //m_driverController.povDown().whileTrue(new ClimbDown(climberSubsystem));
+
         // While the up arrow on the directional pad is held it will cimb the robot
-        m_driverController.povUp().whileTrue(new ClimbUp(climberSubsystem));
+
+        //m_driverController.povUp().whileTrue(new ClimbUp(climberSubsystem));
 
         // Set the default command for the drive subsystem to the command provided by
         // factory with the values provided by the joystick axes on the driver
@@ -135,9 +144,9 @@ public class RobotContainer {
 
         //driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController)); <-- may add back in later
 
-        fuelSubsystem.setDefaultCommand(fuelSubsystem.run(() -> fuelSubsystem.stop()));
+        //fuelSubsystem.setDefaultCommand(fuelSubsystem.run(() -> fuelSubsystem.stop()));
 
-        climberSubsystem.setDefaultCommand(climberSubsystem.run(() -> climberSubsystem.stop()));
+        //climberSubsystem.setDefaultCommand(climberSubsystem.run(() -> climberSubsystem.stop()));
     }
 
     /**
