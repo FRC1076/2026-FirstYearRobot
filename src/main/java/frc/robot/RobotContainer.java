@@ -30,6 +30,7 @@ import frc.robot.subsystems.fuel.*;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -38,6 +39,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.robot.Constants.OperatorConstants.*;
+
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -60,6 +64,9 @@ public class RobotContainer {
 
     // The operator's controller
     private final CommandXboxController operatorController = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
+
+    // makes the gyro
+    private final AHRS gyro = new AHRS(NavXComType.kMXP_SPI);
 
     // The autonomous chooser
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -114,6 +121,11 @@ public class RobotContainer {
         m_driverController.leftBumper().whileTrue(teleopDriveCommand.applyDoubleClutch());
         m_driverController.rightBumper().whileTrue(teleopDriveCommand.applySingleClutch());
 
+        // While the start button is hit reset the gyro 
+        m_driverController.start()
+            .onTrue(Commands.runOnce(() ->
+             gyro.reset()
+             ));
         // While the left bumper on operator controller is held, intake Fuel
 
         //m_driverController.leftTrigger().whileTrue(new Intake(fuelSubsystem));
