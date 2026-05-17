@@ -40,7 +40,7 @@ public final class Constants {
         }
     }
 
-    public static final class FuelConstants {
+    public static final class IntakeConstants {
         // Motor controller IDs for Fuel Mechanism motors
         public static final int LEFT_INTAKE_LAUNCHER_MOTOR_ID = 35;
         public static final int RIGHT_INTAKE_LAUNCHER_MOTOR_ID = 36;
@@ -52,15 +52,21 @@ public final class Constants {
 
         // All values likely need to be tuned based on your robot
         public static final double INDEXER_INTAKING_PERCENT = -.8; 
+
+        public static final double INTAKE_INTAKING_PERCENT = 0.6;
+        public static final double INTAKE_EJECT_PERCENT = -0.8;
+    }
+
+    public static final class ShooterConstants {
         public static final double INDEXER_LAUNCHING_PERCENT = 0.6;
         public static final double INDEXER_SPIN_UP_PRE_LAUNCH_PERCENT = -0.5;
 
-        public static final double INTAKE_INTAKING_PERCENT = 0.6;
         public static final double LAUNCHING_LAUNCHER_PERCENT = .85;
-        public static final double INTAKE_EJECT_PERCENT = -0.8;
 
         public static final double SPIN_UP_SECONDS = 0.75;
     }
+
+
 
     public static final class ClimbConstants {
         // Motor controller IDs for Climb motor
