@@ -1,30 +1,24 @@
-package frc.robot.subsystems.fuel;
+package frc.robot.subsystems.intake;
 
-import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
-import static frc.robot.Constants.FuelConstants.*;
+import static frc.robot.Constants.IntakeConstants.*;
 
-public class FuelSubsystem extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase {
   private final SparkMax LeftIntakeLauncher;
   private final SparkMax RightIntakeLauncher;
   private final SparkMax Indexer;
 
   /** Creates a new CANBallSubsystem. */
-  public FuelSubsystem() {
+  public IntakeSubsystem() {
     // create brushed motors for each of the motors on the launcher mechanism
     LeftIntakeLauncher = new SparkMax(LEFT_INTAKE_LAUNCHER_MOTOR_ID, MotorType.kBrushless);
     RightIntakeLauncher = new SparkMax(RIGHT_INTAKE_LAUNCHER_MOTOR_ID, MotorType.kBrushless);
@@ -54,9 +48,6 @@ public class FuelSubsystem extends SubsystemBase {
     // with your new values. For more information, see the Software Guide.
     SmartDashboard.putNumber("Intaking feeder roller value", INDEXER_INTAKING_PERCENT);
     SmartDashboard.putNumber("Intaking intake roller value", INTAKE_INTAKING_PERCENT);
-    SmartDashboard.putNumber("Launching feeder roller value", INDEXER_LAUNCHING_PERCENT);
-    SmartDashboard.putNumber("Launching launcher roller value", LAUNCHING_LAUNCHER_PERCENT);
-    //SmartDashboard.putNumber("Spin-up feeder roller value", SPIN_UP_FEEDER_VOLTAGE);
   }
 
   // A method to set the voltage of the intake roller
