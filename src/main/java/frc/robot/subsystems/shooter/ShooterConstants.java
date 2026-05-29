@@ -1,15 +1,14 @@
-package frc.robot.subsystems.roller;
+package frc.robot.subsystems.shooter;
 
-public class RollerConstants {
-    // Motor ports
-    public static final int kLeadMotorID = 0;
-    public static final int kFollowMotorID = 0;
+public interface ShooterConstants {
+    public static final int kTopMotorID = 0;
+    public static final int kBottomMotorID = 0;
 
     // Current limits
     public static final int kCurrentLimit = 0;
 
-    public static final boolean kLeadMotorInverted = true; 
-    public static final boolean kFollowMotorInverted = false; // switch?
+    public static final boolean kTopMotorInverted = false; 
+    public static final boolean kBottomMotorInverted = false; // switch?
 
     // Gear ratio
     public static final double kGearRatio = 0; //find

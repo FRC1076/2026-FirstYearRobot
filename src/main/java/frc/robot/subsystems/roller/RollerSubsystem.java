@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.roller.RollerIO.RollerIOInputs;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -20,7 +21,15 @@ public class RollerSubsystem extends SubsystemBase {
         io.updateInputs(inputs);
         Logger.processInputs("Roller", inputs);
     }
-    
+
+    public double getLeadVelocity() {
+        return inputs.motorVelocityRadPerSec[0];
+    }
+
+    public double getFollowVelocity() {
+        return inputs.motorVelocityRadPerSec[1];
+    }
+
     /** Set the motor to the specific voltage */
     public Command setVoltage(double volts) {
         return Commands.runOnce(
@@ -33,22 +42,6 @@ public class RollerSubsystem extends SubsystemBase {
     public Command runVoltage(DoubleSupplier volts) {
         return Commands.run(
             () -> io.setVoltage(volts.getAsDouble()),
-            this
-        );
-    }
-
-    /** Set the rollers to the specified velocity */
-    public Command applyVelocity(double radPerSec) {
-        return Commands.runOnce(
-            () -> io.setVelocity(radPerSec),
-            this
-        );
-    }
-
-    /** Run the rollers at the supplied velocity */
-    public Command runVelocity(DoubleSupplier radPerSec) {
-        return Commands.run(
-            () -> io.setVelocity(radPerSec.getAsDouble()),
             this
         );
     }

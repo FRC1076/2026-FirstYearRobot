@@ -14,19 +14,17 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
 public class RollerIOSparkMax implements RollerIO {
     private final SparkMax m_leadMotor;
     private final SparkMax m_followMotor;
-
-    private RelativeEncoder m_relativeEncoder;
-    private final SparkClosedLoopController m_closedLoopController;
+    private final RelativeEncoder m_leadEncoder;
+    private final RelativeEncoder m_followEncoder;
 
     public RollerIOSparkMax() {
-        m_leadMotor = new SparkMax(RollerConstants.kLeadMotorPort, MotorType.kBrushless);
-        m_followMotor = new SparkMax(RollerConstants.kFollowMotorPort, MotorType.kBrushless);
+        m_leadMotor = new SparkMax(RollerConstants.kLeadMotorID, MotorType.kBrushless);
+        m_followMotor = new SparkMax(RollerConstants.kFollowMotorID, MotorType.kBrushless);
         
         SparkMaxConfig m_leadConfig = new SparkMaxConfig();
         SparkMaxConfig m_followConfig = new SparkMaxConfig();
@@ -68,23 +66,14 @@ public class RollerIOSparkMax implements RollerIO {
         m_leadMotor.configure(m_leadConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         m_followMotor.configure(m_followConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        m_closedLoopController = m_leadMotor.getClosedLoopController();
-        m_relativeEncoder = m_leadMotor.getEncoder();
+        m_leadEncoder = m_leadMotor.getEncoder();
+        m_followEncoder = m_followMotor.getEncoder();
         
     }
 
     @Override
     public void setVoltage(double volts) {
         m_leadMotor.setVoltage(volts);
-    }
-
-    public void setVelocity(double radPerSec){
-        if (radPerSec == 0) {
-            m_leadMotor.setVoltage(0);
-            m_followMotor.setVoltage(0);
-        } else {
-            m_closedLoopController.setSetpoint(radPerSec, ControlType.kVelocity);
-        }
     }
     
     public void updateInputs(RollerIOInputs inputs){
@@ -94,8 +83,8 @@ public class RollerIOSparkMax implements RollerIO {
         inputs.motorCurrentAmps[0] = m_leadMotor.getOutputCurrent();
         inputs.motorCurrentAmps[1] = m_followMotor.getOutputCurrent();
 
-        inputs.motorVelocityRadPerSec[0] = m_relativeEncoder.getVelocity();
-        inputs.motorVelocityRadPerSec[1] = m_relativeEncoder.getVelocity();
+        inputs.motorVelocityRadPerSec[0] = m_leadEncoder.getVelocity();
+        inputs.motorVelocityRadPerSec[1] = m_followEncoder.getVelocity();
 
         inputs.motorTempDegC[0] = m_leadMotor.getMotorTemperature();
         inputs.motorTempDegC[1] = m_followMotor.getMotorTemperature();

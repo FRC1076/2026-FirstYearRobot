@@ -8,11 +8,6 @@ public class RollerIODisabled implements RollerIO {
     public void setVoltage(double volts) {
         voltageTarget = volts;
     }
-
-    @Override
-    public void setVelocity(double radPerSec) {
-        velocityTargetRadPerSec = radPerSec;
-    }
     
     @Override 
     public void updateInputs(RollerIOInputs inputs) {
