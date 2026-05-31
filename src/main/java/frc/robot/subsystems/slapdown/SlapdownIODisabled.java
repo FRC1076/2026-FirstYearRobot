@@ -1,4 +1,4 @@
-package frc.robot.subsystem.slapdown;
+package frc.robot.subsystems.slapdown;
 
 public class SlapdownIODisabled implements SlapdownIO {
     private double appliedVoltage = 0;

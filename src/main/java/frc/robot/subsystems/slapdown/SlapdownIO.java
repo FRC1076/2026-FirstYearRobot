@@ -1,9 +1,9 @@
-package frc.robotsubsystem.slapdown;
+package frc.robot.subsystems.slapdown;
 
-import org.littleonrobotics.junction.Autolog;
+import org.littletonrobotics.junction.AutoLog;
 
 public interface SlapdownIO {
-    @Autolog
+    @AutoLog
     public static class SlapdownIOInputs {
     public double appliedVolts = 0;
     public double currentAmps = 0;
