@@ -38,10 +38,10 @@ public class RollerSubsystem extends SubsystemBase {
         );
     }
 
-    /** Run the Roller motor at supplied voltage */
-    public Command runVoltage(DoubleSupplier volts) {
+    /** Run the Roller motor at supplied voltage */ //????
+    public Command runVoltage(Double volts) {
         return Commands.run(
-            () -> io.setVoltage(volts.getAsDouble()),
+            () -> io.setVoltage(volts),
             this
         );
     }

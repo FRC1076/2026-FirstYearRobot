@@ -21,6 +21,8 @@ import frc.robot.subsystems.climber.*;
 import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.Common.Drive;
 import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.ModuleConfig;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.roller.RollerSubsystem;
+import frc.robot.subsystems.roller.RollerIOSparkMax;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
@@ -53,6 +55,8 @@ public class RobotContainer {
     //private final FuelSubsystem fuelSubsystem;
     //private final ClimberSubsystem climberSubsystem;
 
+    private final RollerSubsystem rollerSubsystem;
+
     private final TeleopDriveCommandV2 teleopDriveCommand;
 
     // The driver's controller
@@ -75,6 +79,8 @@ public class RobotContainer {
             new ModuleIOHardware(ModuleConfig.RearLeft),
             new ModuleIOHardware(ModuleConfig.RearRight)
         );
+        rollerSubsystem = new RollerSubsystem(new RollerIOSparkMax());
+
         //fuelSubsystem = new FuelSubsystem();
         //climberSubsystem = new ClimberSubsystem();
 
@@ -113,6 +119,8 @@ public class RobotContainer {
 
         m_driverController.leftBumper().whileTrue(teleopDriveCommand.applyDoubleClutch());
         m_driverController.rightBumper().whileTrue(teleopDriveCommand.applySingleClutch());
+        m_driverController.leftTrigger().whileTrue(rollerSubsystem.runVoltage(3.0)); // intake
+        // m_driverController.rightTrigger().whileTrue(); // shoot
 
         // While the left bumper on operator controller is held, intake Fuel
 

@@ -5,8 +5,6 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.roller.RollerIO;
-import frc.robot.subsystems.roller.RollerIOInputsAutoLogged;
 
 import org.littletonrobotics.junction.Logger;
 

@@ -1,0 +1,26 @@
+package frc.robot.subsystems.slapdown;
+
+import org.littletonrobotics.junction.AutoLog;
+
+public interface SlapdownIO {
+    @AutoLog
+    public static class SlapdownIOInputs {
+    public double appliedVolts = 0;
+    public double currentAmps = 0;
+    public double angleRadians = 0;
+    public double velocityRadiansPerSecond = 0;
+
+    public double motorTempDegC = 0;
+
+    public double PIDTargetRadians = 0;
+ }
+
+public abstract void updateInputs(SlapdownIOInputs inputs);
+
+public abstract void setVoltage(double volts);
+
+public abstract void setPosition(double radians);
+
+public abstract void rezero();
+
+}  

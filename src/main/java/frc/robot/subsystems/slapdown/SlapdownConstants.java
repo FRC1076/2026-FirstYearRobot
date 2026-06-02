@@ -1,24 +1,25 @@
-package frc.robot.subsystems.roller;
+package frc.robot.subsystems.slapdown;
 
-public class RollerConstants {
-    // Motor ports
-    public static final int kLeadMotorID = 10;
-    public static final int kFollowMotorID = 9;
+public class SlapdownConstants {
+    // Motor IDs
+    public static final int kMotorID = 0;
 
     // Current limits
     public static final int kCurrentLimit = 0;
 
-    public static final boolean kLeadMotorInverted = true; 
-    public static final boolean kFollowMotorInverted = false;
+    public static final boolean kInverted = false; 
 
     // Gear ratio
-    public static final double kGearRatio = 0; //find
+    public static final double kMotorToRotationsRatio = 100; // motor rotations to output rotations
 
     public static final double kPositionFactor = 2 * Math.PI;
     public static final double kVelocityFactor = kPositionFactor / 60;
     public static final double kCruiseVelocity = 0;
     public static final double kMaxAcceleration = 0;
 
+
+    public static final double kForwardPositionLimit = 0; // confirm
+    public static final double kBackwardPositionLimit = 0; // find
 
     // Closed-loop
     public static final double kP = 1; 
@@ -29,4 +30,5 @@ public class RollerConstants {
     public static final double kA = 0;
     public static final double kCos = 0;
     public static final double kCosRatio = 0;
+    
 }
