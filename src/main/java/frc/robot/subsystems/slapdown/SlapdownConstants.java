@@ -18,8 +18,9 @@ public class SlapdownConstants {
     public static final double kMaxAcceleration = 0;
 
 
-    public static final double kForwardPositionLimit = 0; // confirm
-    public static final double kBackwardPositionLimit = 0; // find
+    public static final double kMaxAngleRadians = 0; // confirm
+    public static final double kMinAngleRadians = 0; // find
+    public static final double kAngleToleranceRadians = 0; // ee
 
     // Closed-loop
     public static final double kP = 1; 

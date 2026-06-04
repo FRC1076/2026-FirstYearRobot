@@ -91,10 +91,10 @@ public class DriveConstants {
             }
         }
         public static enum ModuleConfig {
-            FrontLeft(1,11,21, -0.026123046875),
-            FrontRight(2,12,22,-0.426513671875),
-            RearRight(3,13,23,0.0712890625),
-            RearLeft(4,14,24,0.0927734375);
+            FrontLeft(3,4,21, -0.026123046875),
+            FrontRight(1,2,22,-0.426513671875),
+            RearRight(5,6,23,0.0712890625),
+            RearLeft(7,8,24,0.0927734375);
 
             public final int DrivePort;
             public final int TurnPort;

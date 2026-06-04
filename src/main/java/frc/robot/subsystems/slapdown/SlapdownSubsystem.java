@@ -52,6 +52,63 @@ public class SlapdownSubsystem extends SubsystemBase {
         Logger.processInputs("Slapdown", inputs);
     }
 
+    public double getSlapdownAngleRadians() {
+        return inputs.angleRadians;
+    }
+
+    public boolean withinTolerance(double target) {
+        return Math.abs(getSlapdownAngleRadians() - target) < SlapdownConstants.kAngleToleranceRadians;
+    }
+
+    public boolean withinTolerance(DoubleSupplier target) {
+        return Math.abs(getSlapdownAngleRadians() - target.getAsDouble()) < SlapdownConstants.kAngleToleranceRadians;
+    }
+
+    /** Set the voltage applied to the motor with software stops enabled */
+    public Command applyVoltage(double volts) {
+        return Commands.runOnce(
+            () -> io.setVoltage(volts),
+            this
+        );
+    }
+
+    /** Run the motor at the supplied voltage with software stops enabled */
+    public Command runVoltage(DoubleSupplier volts) {
+        return Commands.run(
+            () -> io.setVoltage(volts.getAsDouble()),
+            this
+        );
+    }
+
+    /** Tell the slapdown to go to the specified position */
+    public Command applyPosition(double radians) {
+        return Commands.runOnce(
+            () -> io.setPosition(MathUtil.clamp(radians, SlapdownConstants.kMinAngleRadians, SlapdownConstants.kMaxAngleRadians)),
+            this
+        );
+    }
+
+    /** Run the slapdown to the supplied position */
+    public Command runPosition(DoubleSupplier radians) {
+        return Commands.run(
+            () -> io.setPosition(MathUtil.clamp(radians.getAsDouble(), SlapdownConstants.kMinAngleRadians, SlapdownConstants.kMaxAngleRadians)),
+            this
+        );
+    }
+
+    /** Set the current position of the slapdown to zero */
+    public Command rezeroSlapdown() {
+        return Commands.runOnce(() -> io.rezero());
+    }
+
+    public Command sysIdQuasistatic(Direction direction) {
+        return sysId.quasistatic(direction);
+    }
+
+    public Command sysIdDynamic(Direction direction) {
+        return sysId.dynamic(direction);
+    }
+
 
 
 
