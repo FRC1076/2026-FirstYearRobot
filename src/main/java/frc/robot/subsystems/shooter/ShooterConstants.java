@@ -1,11 +1,11 @@
 package frc.robot.subsystems.shooter;
 
-public interface ShooterConstants {
+public class ShooterConstants {
     public static final int kTopMotorID = 0;
-    public static final int kBottomMotorID = 0;
+    public static final int kBottomMotorID = 1;
 
     // Current limits
-    public static final int kCurrentLimit = 0;
+    public static final int kCurrentLimit = 20;
 
     public static final boolean kTopMotorInverted = false; 
     public static final boolean kBottomMotorInverted = false; // switch?

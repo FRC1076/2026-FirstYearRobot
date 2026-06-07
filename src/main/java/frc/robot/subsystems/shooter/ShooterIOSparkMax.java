@@ -8,8 +8,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import frc.robot.subsystems.roller.RollerConstants;
-
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
@@ -79,11 +77,11 @@ public class ShooterIOSparkMax implements ShooterIO {
 
     @Override
     public void updateInputs(ShooterIOInputs inputs) {
-        inputs.motorAppliedVoltage[0] = m_topMotor.getAppliedOutput();
-        inputs.motorAppliedVoltage[1] = m_topMotor.getAppliedOutput();
+        inputs.motorAppliedVoltage[0] = m_topMotor.getAppliedOutput() * m_topMotor.getBusVoltage();
+        inputs.motorAppliedVoltage[1] = m_bottomMotor.getAppliedOutput() * m_bottomMotor.getBusVoltage();
 
         inputs.motorCurrentAmps[0] = m_topMotor.getOutputCurrent();
-        inputs.motorCurrentAmps[1] = m_topMotor.getOutputCurrent();
+        inputs.motorCurrentAmps[1] = m_bottomMotor.getOutputCurrent();
 
         inputs.motorTempDegC[0] = m_topMotor.getMotorTemperature();
         inputs.motorTempDegC[1] = m_bottomMotor.getMotorTemperature();

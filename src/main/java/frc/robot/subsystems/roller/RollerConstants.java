@@ -6,7 +6,7 @@ public class RollerConstants {
     public static final int kFollowMotorID = 9;
 
     // Current limits
-    public static final int kCurrentLimit = 0;
+    public static final int kCurrentLimit = 20;
 
     public static final boolean kLeadMotorInverted = true; 
     public static final boolean kFollowMotorInverted = false;

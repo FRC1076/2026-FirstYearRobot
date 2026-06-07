@@ -16,6 +16,7 @@ public class ShooterSubsystem extends SubsystemBase {
         this.io = io;
     }
 
+    @Override
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Shooter", inputs);
@@ -33,16 +34,16 @@ public class ShooterSubsystem extends SubsystemBase {
     /** Set the motors to the specific voltages */
     public Command setVoltage(double topVolts, double bottomVolts) {
         return Commands.parallel(
-            Commands.runOnce (() -> io.setTopVoltage(topVolts)),
-            Commands.runOnce (() -> io.setTopVoltage(bottomVolts))
+            Commands.runOnce (() -> io.setTopVoltage(topVolts), this),
+            Commands.runOnce (() -> io.setBottomVoltage(bottomVolts), this)
         );
     }
 
     /** Run the Shooter motors at supplied voltages */
     public Command runVoltage(DoubleSupplier topVolts, DoubleSupplier bottomVolts) {
         return Commands.parallel(
-            Commands.run (() -> io.setTopVoltage(topVolts.getAsDouble())),
-            Commands.run (() -> io.setTopVoltage(bottomVolts.getAsDouble()))
+            Commands.run (() -> io.setTopVoltage(topVolts.getAsDouble()), this),
+            Commands.run (() -> io.setBottomVoltage(bottomVolts.getAsDouble()), this)
         );
     }
 

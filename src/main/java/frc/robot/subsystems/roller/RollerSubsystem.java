@@ -17,6 +17,7 @@ public class RollerSubsystem extends SubsystemBase {
         this.io = io;
     }
 
+    @Override
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Roller", inputs);
@@ -53,7 +54,7 @@ public class RollerSubsystem extends SubsystemBase {
 
     /** Gets the roller motor's voltage */
     public double getVoltage() {
-        return inputs.motorAppliedVoltage[1];
+        return inputs.motorAppliedVoltage[0];
     }
     
 }

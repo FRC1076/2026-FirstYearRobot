@@ -76,6 +76,7 @@ public class RollerIOSparkMax implements RollerIO {
         m_leadMotor.setVoltage(volts);
     }
     
+    @Override
     public void updateInputs(RollerIOInputs inputs){
         inputs.motorAppliedVoltage[0] = m_leadMotor.getAppliedOutput() * m_leadMotor.getBusVoltage();
         inputs.motorAppliedVoltage[1] = m_followMotor.getAppliedOutput() * m_followMotor.getBusVoltage();
