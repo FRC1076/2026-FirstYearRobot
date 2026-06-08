@@ -9,9 +9,9 @@ public class KickerConstants {
     public static final boolean kMotorInverted = false; //switch?
 
     // Gear ratio
-    public static final double kGearRatio = 0; //find
+    public static final double kMotorToRotationsRatio = 1.0; //find
 
-    public static final double kPositionFactor = 2 * Math.PI;
+    public static final double kPositionFactor = 2 * Math.PI / kMotorToRotationsRatio;
     public static final double kVelocityFactor = kPositionFactor / 60;
     public static final double kMaxAcceleration = 0;
 

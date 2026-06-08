@@ -7,6 +7,7 @@ package frc.robot.subsystems.roller;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.revrobotics.spark.FeedbackSensor;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
@@ -19,6 +20,9 @@ import com.revrobotics.spark.SparkMax;
 public class RollerIOSparkMax implements RollerIO {
     private final SparkMax m_leadMotor;
     private final SparkMax m_followMotor;
+
+    private final SparkClosedLoopController m_PidController;
+
     private final RelativeEncoder m_leadEncoder;
     private final RelativeEncoder m_followEncoder;
 
@@ -47,12 +51,9 @@ public class RollerIOSparkMax implements RollerIO {
         m_leadConfig.closedLoop.feedForward
             .kS(RollerConstants.kS)
             .kV(RollerConstants.kV)
-            .kA(RollerConstants.kA)
-            .kCos(RollerConstants.kCos)
-            .kCosRatio(RollerConstants.kCosRatio);
+            .kA(RollerConstants.kA);
 
         m_leadConfig.closedLoop.maxMotion
-            .cruiseVelocity(RollerConstants.kCruiseVelocity)
             .maxAcceleration(RollerConstants.kMaxAcceleration)
             .allowedProfileError(0.01);
 
@@ -66,6 +67,8 @@ public class RollerIOSparkMax implements RollerIO {
         m_leadMotor.configure(m_leadConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         m_followMotor.configure(m_followConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
+        m_PidController = m_leadMotor.getClosedLoopController();
+
         m_leadEncoder = m_leadMotor.getEncoder();
         m_followEncoder = m_followMotor.getEncoder();
         
@@ -74,6 +77,11 @@ public class RollerIOSparkMax implements RollerIO {
     @Override
     public void setVoltage(double volts) {
         m_leadMotor.setVoltage(volts);
+    }
+
+    @Override
+    public void setVelocity(double radPerSec) {
+        m_PidController.setSetpoint(radPerSec, ControlType.kVelocity);
     }
     
     @Override

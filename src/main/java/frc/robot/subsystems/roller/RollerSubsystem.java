@@ -47,6 +47,13 @@ public class RollerSubsystem extends SubsystemBase {
         );
     }
 
+    public Command setVelocity(Double radPerSec) {
+        return Commands.runOnce(
+            () -> io.setVelocity(radPerSec),
+            this
+        );
+    }
+
     /** Stop the roller's motors */
     public Command stop() {
         return setVoltage(0);
