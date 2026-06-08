@@ -22,28 +22,24 @@ public class KickerSubsystem extends SubsystemBase {
         Logger.processInputs("Kicker", inputs);
     }
 
-    /** Get the Kicker motors velocities */
-    public double getVelocity() {
-        return inputs.motorVelocityRadPerSec;
-    }
+    // /** Get the Kicker motors velocities */
+    // public double getVelocity() {
+    //     return inputs.motorVelocityRadPerSec;
+    // }
 
     /** Set the motors to the specific voltages */
     public Command setVoltage(double volts) {
-        return Commands.parallel(
-            Commands.runOnce (() -> io.setVoltage(volts), this)
-        );
+        return Commands.runOnce (() -> io.setVoltage(volts), this);
     }
 
     /** Run the Kicker motors at supplied voltages */
     public Command runVoltage(DoubleSupplier volts) {
-        return Commands.parallel(
-            Commands.run (() -> io.setVoltage(volts.getAsDouble()), this)
-        );
+        return Commands.run (() -> io.setVoltage(volts.getAsDouble()), this);
     }
 
-    public Command setVelocity(double radPerSec) {
-        return Commands.runOnce(() -> io.setVelocity(radPerSec), this);
-    }
+    // public Command setVelocity(double radPerSec) {
+    //     return Commands.runOnce(() -> io.setVelocity(radPerSec), this);
+    // }
 
     /** Stop the Kicker's motors */
     public Command stop() {

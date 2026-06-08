@@ -8,12 +8,9 @@ public interface KickerIO {
         public double motorAppliedVoltage = 0;
         public double motorCurrentAmps = 0;
         public double motorTempDegC = 0;
-        public double motorVelocityRadPerSec = 0;
     }
 
     public abstract void setVoltage(double volts);
-
-    public abstract void setVelocity(double radPerSec);
 
     public abstract void updateInputs(KickerIOInputs inputs);
 

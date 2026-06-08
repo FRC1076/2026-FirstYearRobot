@@ -15,7 +15,7 @@ import com.revrobotics.spark.SparkMax;
 public class KickerIOSparkMax implements KickerIO {
     private final SparkMax m_motor;
 
-    private final SparkClosedLoopController m_PidController;
+    // private final SparkClosedLoopController m_PidController;
 
     private final RelativeEncoder m_encoder;
 
@@ -29,20 +29,20 @@ public class KickerIOSparkMax implements KickerIO {
             .idleMode(IdleMode.kBrake)
             .smartCurrentLimit(KickerConstants.kCurrentLimit);
 
-        m_config.encoder
-            .positionConversionFactor(KickerConstants.kPositionFactor)
-            .velocityConversionFactor(KickerConstants.kVelocityFactor);
+        // m_config.encoder
+        //     .positionConversionFactor(KickerConstants.kPositionFactor)
+        //     .velocityConversionFactor(KickerConstants.kVelocityFactor);
 
-        m_config.closedLoop
-            .p(KickerConstants.kP)
-            .i(KickerConstants.kI)
-            .d(KickerConstants.kD)
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+        // m_config.closedLoop
+        //     .p(KickerConstants.kP)
+        //     .i(KickerConstants.kI)
+        //     .d(KickerConstants.kD)
+        //     .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
         
-        m_config.closedLoop.feedForward
-            .kS(KickerConstants.kS)
-            .kV(KickerConstants.kV)
-            .kA(KickerConstants.kA);
+        // m_config.closedLoop.feedForward
+        //     .kS(KickerConstants.kS)
+        //     .kV(KickerConstants.kV)
+        //     .kA(KickerConstants.kA);
 
         m_config.closedLoop.maxMotion
             .maxAcceleration(KickerConstants.kMaxAcceleration)
@@ -54,7 +54,7 @@ public class KickerIOSparkMax implements KickerIO {
         
         m_motor.configure(m_config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        m_PidController = m_motor.getClosedLoopController();
+        // m_PidController = m_motor.getClosedLoopController();
 
         m_encoder = m_motor.getEncoder();
     }
@@ -64,10 +64,10 @@ public class KickerIOSparkMax implements KickerIO {
         m_motor.setVoltage(volts);
     }
 
-    @Override
-    public void setVelocity(double radPerSec) {
-        m_PidController.setSetpoint(radPerSec, ControlType.kVelocity);
-    }
+    // @Override
+    // public void setVelocity(double radPerSec) {
+    //     m_PidController.setSetpoint(radPerSec, ControlType.kVelocity);
+    // }
 
     @Override
     public void updateInputs(KickerIOInputs inputs) {
@@ -76,8 +76,6 @@ public class KickerIOSparkMax implements KickerIO {
         inputs.motorCurrentAmps = m_motor.getOutputCurrent();
 
         inputs.motorTempDegC = m_motor.getMotorTemperature();
-
-        inputs.motorVelocityRadPerSec = m_encoder.getVelocity();
     }
 
     @Override 

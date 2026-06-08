@@ -14,14 +14,15 @@ public class KickerIOTalonSRX implements KickerIO {
 
         m_motor.setInverted(KickerConstants.kMotorInverted);
         m_motor.setNeutralMode(NeutralMode.Brake);
+        m_motor.enableCurrentLimit(true);
         m_motor.configPeakCurrentLimit(KickerConstants.kCurrentLimit);
         
-        m_motor.config_kP(KickerConstants.kPIDSlot, KickerConstants.kP);
-        m_motor.config_kI(KickerConstants.kPIDSlot, KickerConstants.kI);
-        m_motor.config_kD(KickerConstants.kPIDSlot, KickerConstants.kD);
+        // m_motor.config_kP(KickerConstants.kPIDSlot, KickerConstants.kP);
+        // m_motor.config_kI(KickerConstants.kPIDSlot, KickerConstants.kI);
+        // m_motor.config_kD(KickerConstants.kPIDSlot, KickerConstants.kD);
 
         m_motor.configForwardSoftLimitEnable(false);
-        m_motor.configReverseSoftLimitEnable(false);       
+        m_motor.configReverseSoftLimitEnable(false);
         
     }
 
@@ -30,12 +31,12 @@ public class KickerIOTalonSRX implements KickerIO {
         m_motor.setVoltage(volts);
     }
 
-    @Override
-    public void setVelocity(double radPerSec){
-        double numMotorTicks = radPerSec / KickerConstants.kVelocityFactor;
-        m_motor.set(ControlMode.Velocity, numMotorTicks);
+    // @Override
+    // public void setVelocity(double ticksPer100Ms){
+    //     double numMotorTicks = ticksPer100Ms / KickerConstants.kVelocityFactor;
+    //     m_motor.set(ControlMode.Velocity, numMotorTicks);
 
-    }
+    // }
 
     @Override
     public void updateInputs(KickerIOInputs inputs) {
@@ -45,7 +46,6 @@ public class KickerIOTalonSRX implements KickerIO {
 
         inputs.motorTempDegC = m_motor.getTemperature();
 
-        inputs.motorVelocityRadPerSec = m_motor.getSelectedSensorVelocity() * KickerConstants.kVelocityFactor;
     }
 
     @Override
