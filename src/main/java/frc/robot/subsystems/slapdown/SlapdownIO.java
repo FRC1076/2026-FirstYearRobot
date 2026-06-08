@@ -23,8 +23,4 @@ public abstract void setPosition(double radians);
 
 public abstract void rezero();
 
-public default void periodic() {
-
-}
-
 }  

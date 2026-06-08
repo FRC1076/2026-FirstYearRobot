@@ -15,6 +15,8 @@ import com.revrobotics.spark.SparkMax;
 public class DrumIOSparkMax implements DrumIO {
     private final SparkMax m_motor;
 
+    private final SparkClosedLoopController m_PidController;
+
     private final RelativeEncoder m_encoder;
 
     public DrumIOSparkMax() {
@@ -40,12 +42,9 @@ public class DrumIOSparkMax implements DrumIO {
         m_config.closedLoop.feedForward
             .kS(DrumConstants.kS)
             .kV(DrumConstants.kV)
-            .kA(DrumConstants.kA)
-            .kCos(DrumConstants.kCos)
-            .kCosRatio(DrumConstants.kCosRatio);
+            .kA(DrumConstants.kA);
 
         m_config.closedLoop.maxMotion
-            .cruiseVelocity(DrumConstants.kCruiseVelocity)
             .maxAcceleration(DrumConstants.kMaxAcceleration)
             .allowedProfileError(0.01);
 
@@ -55,12 +54,19 @@ public class DrumIOSparkMax implements DrumIO {
         
         m_motor.configure(m_config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
+        m_PidController = m_motor.getClosedLoopController();
+
         m_encoder = m_motor.getEncoder();
     }
 
     @Override
     public void setVoltage(double volts) {
         m_motor.setVoltage(volts);
+    }
+
+    @Override
+    public void setVelocity(double radPerSec) {
+        m_PidController.setSetpoint(radPerSec, ControlType.kVelocity);
     }
 
     @Override

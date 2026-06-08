@@ -13,7 +13,6 @@ public class KickerConstants {
 
     public static final double kPositionFactor = 2 * Math.PI;
     public static final double kVelocityFactor = kPositionFactor / 60;
-    public static final double kCruiseVelocity = 0;
     public static final double kMaxAcceleration = 0;
 
 
@@ -25,7 +24,5 @@ public class KickerConstants {
     public static final double kS = 0;
     public static final double kV = 0; 
     public static final double kA = 0;
-    public static final double kCos = 0;
-    public static final double kCosRatio = 0;
     
 }

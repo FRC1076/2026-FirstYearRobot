@@ -15,6 +15,8 @@ import com.revrobotics.spark.SparkMax;
 public class KickerIOSparkMax implements KickerIO {
     private final SparkMax m_motor;
 
+    private final SparkClosedLoopController m_PidController;
+
     private final RelativeEncoder m_encoder;
 
     public KickerIOSparkMax() {
@@ -40,12 +42,9 @@ public class KickerIOSparkMax implements KickerIO {
         m_config.closedLoop.feedForward
             .kS(KickerConstants.kS)
             .kV(KickerConstants.kV)
-            .kA(KickerConstants.kA)
-            .kCos(KickerConstants.kCos)
-            .kCosRatio(KickerConstants.kCosRatio);
+            .kA(KickerConstants.kA);
 
         m_config.closedLoop.maxMotion
-            .cruiseVelocity(KickerConstants.kCruiseVelocity)
             .maxAcceleration(KickerConstants.kMaxAcceleration)
             .allowedProfileError(0.01);
 
@@ -55,12 +54,19 @@ public class KickerIOSparkMax implements KickerIO {
         
         m_motor.configure(m_config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
+        m_PidController = m_motor.getClosedLoopController();
+
         m_encoder = m_motor.getEncoder();
     }
 
     @Override
     public void setVoltage(double volts) {
         m_motor.setVoltage(volts);
+    }
+
+    @Override
+    public void setVelocity(double radPerSec) {
+        m_PidController.setSetpoint(radPerSec, ControlType.kVelocity);
     }
 
     @Override

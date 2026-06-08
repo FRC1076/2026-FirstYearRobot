@@ -13,6 +13,8 @@ public interface KickerIO {
 
     public abstract void setVoltage(double volts);
 
+    public abstract void setVelocity(double radPerSec);
+
     public abstract void updateInputs(KickerIOInputs inputs);
 
     public abstract void stop();

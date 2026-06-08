@@ -16,6 +16,8 @@ public class ShooterIOSparkMax implements ShooterIO {
     private final SparkMax m_topMotor;
     private final SparkMax m_bottomMotor;
 
+    
+
     private final RelativeEncoder m_topMotorEncoder;
     private final RelativeEncoder m_bottomMotorEncoder;
 
@@ -43,12 +45,9 @@ public class ShooterIOSparkMax implements ShooterIO {
         m_config.closedLoop.feedForward
             .kS(ShooterConstants.kS)
             .kV(ShooterConstants.kV)
-            .kA(ShooterConstants.kA)
-            .kCos(ShooterConstants.kCos)
-            .kCosRatio(ShooterConstants.kCosRatio);
+            .kA(ShooterConstants.kA);
 
         m_config.closedLoop.maxMotion
-            .cruiseVelocity(ShooterConstants.kCruiseVelocity)
             .maxAcceleration(ShooterConstants.kMaxAcceleration)
             .allowedProfileError(0.01);
 

@@ -19,7 +19,7 @@ public class BeltSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         io.updateInputs(inputs);
-        Logger.processInputs("Roller", inputs);
+        Logger.processInputs("Belt", inputs);
     }
 
     public double getVelocity() {
@@ -35,9 +35,9 @@ public class BeltSubsystem extends SubsystemBase {
     }
 
     /** Run the Belt motor at supplied voltage */ //????
-    public Command runVoltage(Double volts) {
+    public Command runVoltage(DoubleSupplier volts) {
         return Commands.run(
-            () -> io.setVoltage(volts),
+            () -> io.setVoltage(volts.getAsDouble()),
             this
         );
     }

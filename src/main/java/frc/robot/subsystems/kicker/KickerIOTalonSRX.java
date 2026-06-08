@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.Encoder;
 
 public class KickerIOTalonSRX implements KickerIO {
     private final TalonSRX m_motor;
-    private final Encoder m_encoder;
+    // private final Encoder m_encoder;
 
     public KickerIOTalonSRX() {
         m_motor = new TalonSRX(KickerConstants.kMotorID);
@@ -33,6 +33,26 @@ public class KickerIOTalonSRX implements KickerIO {
         
     
 
+
+    }
+
+    @Override
+    public void setVoltage(double volts){
+
+    }
+
+    @Override
+    public void setVelocity(double radPerSec){
+
+    }
+
+    @Override
+    public void updateInputs(KickerIOInputs inputs) {
+
+    }
+
+    @Override
+    public void stop() {
 
     }
 

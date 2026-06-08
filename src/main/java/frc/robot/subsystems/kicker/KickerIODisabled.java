@@ -2,6 +2,7 @@ package frc.robot.subsystems.kicker;
 
 public class KickerIODisabled implements KickerIO {
     private double voltageTarget = 0.0;
+    private double velocityTarget = 0.0;
 
     @Override
     public void setVoltage(double volts) {
@@ -9,8 +10,14 @@ public class KickerIODisabled implements KickerIO {
     }
 
     @Override
+    public void setVelocity(double radPerSec) {
+        velocityTarget = radPerSec;
+    }
+
+    @Override
     public void updateInputs(KickerIOInputs inputs) {
         inputs.motorAppliedVoltage = voltageTarget;
+        inputs.motorVelocityRadPerSec = velocityTarget;
     }
 
     @Override

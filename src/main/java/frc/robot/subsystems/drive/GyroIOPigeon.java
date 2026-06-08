@@ -66,7 +66,7 @@ public class GyroIOPigeon implements GyroIO {
         inputs.yawVelocityRadPerSec = yawVelocity.getValue().in(RadiansPerSecond);
 
         int samples = OdometryThread.getInstance().sampleCount;
-        OdometryThread.safeDrain(yawTimestampQueue, yawTimestampBuffer,samples);
+        OdometryThread.safeDrain(yawTimestampQueue, yawTimestampBuffer, samples);
         OdometryThread.safeDrain(yawPositionQueue, yawPositionBuffer, samples);
         inputs.odometryYawTimestamps = yawTimestampBuffer.stream().mapToDouble((Long value) -> value/1e6).toArray();
         inputs.odometryYawPositions = yawPositionBuffer.stream().map((Double value) -> Rotation2d.fromRadians(value)).toArray(Rotation2d[]::new);
