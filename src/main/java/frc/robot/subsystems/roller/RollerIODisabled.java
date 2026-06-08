@@ -18,5 +18,7 @@ public class RollerIODisabled implements RollerIO {
     public void updateInputs(RollerIOInputs inputs) {
         inputs.motorAppliedVoltage[0] = voltageTarget;
         inputs.motorAppliedVoltage[1] = voltageTarget;
+        inputs.motorVelocityRadPerSec[0] = velocityTarget;
+        inputs.motorVelocityRadPerSec[1] = velocityTarget;
     }
 }

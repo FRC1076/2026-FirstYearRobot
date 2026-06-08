@@ -1,24 +1,14 @@
 package frc.robot.subsystems.kicker;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.BaseTalon;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXPIDSetConfiguration;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-
-import edu.wpi.first.wpilibj.Encoder;
-
-
-// IN PROGRESS IN PROGRESS IN PROGRESS IN PROGRESS IN PROGRESS IN PROGRESS
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class KickerIOTalonSRX implements KickerIO {
-    private final TalonSRX m_motor;
-    // private final Encoder m_encoder;
+    private final WPI_TalonSRX m_motor;
 
     public KickerIOTalonSRX() {
-        m_motor = new TalonSRX(KickerConstants.kMotorID);
+        m_motor = new WPI_TalonSRX(KickerConstants.kMotorID);
 
         m_motor.configFactoryDefault();
 
@@ -29,34 +19,38 @@ public class KickerIOTalonSRX implements KickerIO {
         m_motor.config_kP(KickerConstants.kPIDSlot, KickerConstants.kP);
         m_motor.config_kI(KickerConstants.kPIDSlot, KickerConstants.kI);
         m_motor.config_kD(KickerConstants.kPIDSlot, KickerConstants.kD);
-       
+
+        m_motor.configForwardSoftLimitEnable(false);
+        m_motor.configReverseSoftLimitEnable(false);       
         
-    
-
-
     }
 
     @Override
     public void setVoltage(double volts){
-
+        m_motor.setVoltage(volts);
     }
 
     @Override
     public void setVelocity(double radPerSec){
+        double numMotorTicks = radPerSec / KickerConstants.kVelocityFactor;
+        m_motor.set(ControlMode.Velocity, numMotorTicks);
 
     }
 
     @Override
     public void updateInputs(KickerIOInputs inputs) {
+        inputs.motorAppliedVoltage = m_motor.get() * m_motor.getBusVoltage();
 
+        inputs.motorCurrentAmps = m_motor.getStatorCurrent();
+
+        inputs.motorTempDegC = m_motor.getTemperature();
+
+        inputs.motorVelocityRadPerSec = m_motor.getSelectedSensorVelocity() * KickerConstants.kVelocityFactor;
     }
 
     @Override
     public void stop() {
-
+        m_motor.setVoltage(0.0);
     }
 
-
-    
 }
- // IN PROGRESS IN PROGRESS IN PROGRESS IN PROGRESS IN PROGRESS IN PROGRESS

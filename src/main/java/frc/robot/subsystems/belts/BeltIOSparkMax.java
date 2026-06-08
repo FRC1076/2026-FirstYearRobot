@@ -1,9 +1,5 @@
 package frc.robot.subsystems.belts;
 
-import static edu.wpi.first.units.Units.Volts;
-
-import com.revrobotics.spark.FeedbackSensor;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.RelativeEncoder;

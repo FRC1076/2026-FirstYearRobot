@@ -49,7 +49,7 @@ public class GyroIONavX implements GyroIO {
         OdometryThread.safeDrain(yawPositionQueue, yawPositionBuffer, samples);
 
         inputs.odometryYawPositions = yawPositionBuffer.stream().map((Double value) -> Rotation2d.fromRadians(value)).toArray(Rotation2d[]::new);
-        inputs.odometryYawTimestamps = yawTimestampQueue.stream().mapToDouble((Long value) -> value).toArray();
+        inputs.odometryYawTimestamps = yawTimestampBuffer.stream().mapToDouble((Long value) -> value).toArray();
 
         yawTimestampBuffer.clear();
         yawPositionBuffer.clear();

@@ -20,6 +20,9 @@ import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.ModuleConfig;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.roller.RollerSubsystem;
 import frc.robot.subsystems.roller.RollerIOSparkMax;
+import frc.robot.subsystems.slapdown.SlapdownSubsystem;
+import frc.robot.subsystems.slapdown.SlapdownConstants;
+import frc.robot.subsystems.slapdown.SlapdownIOSparkMax;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
@@ -52,6 +55,8 @@ public class RobotContainer {
 
     private final RollerSubsystem rollerSubsystem;
 
+    //private final SlapdownSubsystem slapdownSubsystem;
+
     private final TeleopDriveCommandV2 teleopDriveCommand;
 
     // The driver's controller
@@ -75,6 +80,7 @@ public class RobotContainer {
             new ModuleIOHardware(ModuleConfig.RearRight)
         );
         rollerSubsystem = new RollerSubsystem(new RollerIOSparkMax());
+        //slapdownSubsystem = new SlapdownSubsystem(new SlapdownIOSparkMax());
 
         //fuelSubsystem = new FuelSubsystem();
         //climberSubsystem = new ClimberSubsystem();
@@ -114,8 +120,9 @@ public class RobotContainer {
 
         m_driverController.leftBumper().whileTrue(teleopDriveCommand.applyDoubleClutch());
         m_driverController.rightBumper().whileTrue(teleopDriveCommand.applySingleClutch());
-        m_driverController.leftTrigger().whileTrue(rollerSubsystem.runVoltage(3.0)); // intake (fix)
-        // m_driverController.rightTrigger().whileTrue(); // shoot
+        m_driverController.leftTrigger().whileTrue(rollerSubsystem.runVoltage(3.0)); // INTAKE
+        // m_driverController.someTrigger().whileTrue(slapdownSubsystem.applyPosition(SlapdownConstants.kMinAngleRadians)); (CHANGE?)
+        // m_driverController.rightTrigger().whileTrue(); // SHOOT
 
         // While the left bumper on operator controller is held, intake Fuel
 

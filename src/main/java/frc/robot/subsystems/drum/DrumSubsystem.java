@@ -29,16 +29,12 @@ public class DrumSubsystem extends SubsystemBase {
 
     /** Set the motors to the specific voltages */
     public Command setVoltage(double volts) {
-        return Commands.parallel(
-            Commands.runOnce (() -> io.setVoltage(volts), this)
-        );
+        return Commands.runOnce (() -> io.setVoltage(volts), this);
     }
 
     /** Run the Drum motors at supplied voltages */
     public Command runVoltage(DoubleSupplier volts) {
-        return Commands.parallel(
-            Commands.run (() -> io.setVoltage(volts.getAsDouble()), this)
-        );
+        return Commands.run (() -> io.setVoltage(volts.getAsDouble()), this);
     }
 
     public Command setVelocity(double radPerSec) {
