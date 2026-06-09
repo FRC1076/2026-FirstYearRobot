@@ -7,7 +7,7 @@ public interface KickerIO {
     public static class KickerIOInputs {
         public double motorAppliedVoltage = 0;
         public double motorCurrentAmps = 0;
-        public double motorTempDegC = 0;
+        // public double motorTempDegC = 0;
     }
 
     public abstract void setVoltage(double volts);

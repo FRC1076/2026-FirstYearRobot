@@ -1,5 +1,7 @@
 package frc.robot.subsystems.drum;
 
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 public class DrumConstants {
     public static final int kMotorID = 0; // ADD
 
@@ -13,7 +15,9 @@ public class DrumConstants {
 
     public static final double kPositionFactor = 2 * Math.PI / kMotorToRotationsRatio;
     public static final double kVelocityFactor = kPositionFactor / 60;
-    public static final double kMaxAcceleration = 0; // FIND
+    public static final double kMaxAcceleration = 1000000; // FIND
+    public static final double kAllowedProfileError = 0.05;
+    public static final IdleMode kIdleModeSparkMax = IdleMode.kBrake;
 
 
     // Closed-loop (TUNE ALL)

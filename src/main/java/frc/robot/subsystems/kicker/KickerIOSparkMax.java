@@ -26,7 +26,7 @@ public class KickerIOSparkMax implements KickerIO {
 
         m_config
             .inverted(KickerConstants.kMotorInverted)
-            .idleMode(IdleMode.kBrake)
+            .idleMode(KickerConstants.kIdleModeSparkMax)
             .smartCurrentLimit(KickerConstants.kCurrentLimit);
 
         // m_config.encoder
@@ -46,7 +46,7 @@ public class KickerIOSparkMax implements KickerIO {
 
         m_config.closedLoop.maxMotion
             .maxAcceleration(KickerConstants.kMaxAcceleration)
-            .allowedProfileError(0.01);
+            .allowedProfileError(KickerConstants.kAllowedProfileError);
 
         m_config.softLimit
             .forwardSoftLimitEnabled(false)
@@ -75,7 +75,7 @@ public class KickerIOSparkMax implements KickerIO {
 
         inputs.motorCurrentAmps = m_motor.getOutputCurrent();
 
-        inputs.motorTempDegC = m_motor.getMotorTemperature();
+        // inputs.motorTempDegC = m_motor.getMotorTemperature();
     }
 
     @Override 

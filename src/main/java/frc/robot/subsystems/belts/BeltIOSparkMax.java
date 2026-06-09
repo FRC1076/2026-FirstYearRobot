@@ -19,7 +19,7 @@ public class BeltIOSparkMax implements BeltIO {
 
         m_config
             .inverted(BeltConstants.kMotorInverted)
-            .idleMode(IdleMode.kBrake)
+            .idleMode(BeltConstants.kIdleModeSparkMax)
             .smartCurrentLimit(BeltConstants.kCurrentLimit);
 
         m_config.encoder

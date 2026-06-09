@@ -35,7 +35,7 @@ public class RollerIOSparkMax implements RollerIO {
 
         m_leadConfig
             .inverted(RollerConstants.kLeadMotorInverted)
-            .idleMode(IdleMode.kBrake)
+            .idleMode(RollerConstants.kIdleModeSparkMax)
             .smartCurrentLimit(RollerConstants.kCurrentLimit);
 
         m_leadConfig.encoder
@@ -55,7 +55,7 @@ public class RollerIOSparkMax implements RollerIO {
 
         m_leadConfig.closedLoop.maxMotion
             .maxAcceleration(RollerConstants.kMaxAcceleration)
-            .allowedProfileError(0.01);
+            .allowedProfileError(RollerConstants.kAllowedProfileError);
 
         m_leadConfig.softLimit
             .forwardSoftLimitEnabled(false)

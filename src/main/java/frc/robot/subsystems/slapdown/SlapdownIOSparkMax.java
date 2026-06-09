@@ -28,7 +28,7 @@ public class SlapdownIOSparkMax implements SlapdownIO {
 
         m_config
             .inverted(SlapdownConstants.kInverted)
-            .idleMode(IdleMode.kBrake)
+            .idleMode(SlapdownConstants.kIdleModeSparkMax)
             .smartCurrentLimit(SlapdownConstants.kCurrentLimit);
 
         m_config.encoder
@@ -51,7 +51,7 @@ public class SlapdownIOSparkMax implements SlapdownIO {
         m_config.closedLoop.maxMotion
             .cruiseVelocity(SlapdownConstants.kCruiseVelocity)
             .maxAcceleration(SlapdownConstants.kMaxAcceleration)
-            .allowedProfileError(0.05);
+            .allowedProfileError(SlapdownConstants.kAllowedProfileError);
 
         m_config.softLimit
             .forwardSoftLimitEnabled(false)

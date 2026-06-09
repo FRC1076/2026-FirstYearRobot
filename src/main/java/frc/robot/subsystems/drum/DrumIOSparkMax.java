@@ -26,7 +26,7 @@ public class DrumIOSparkMax implements DrumIO {
 
         m_config
             .inverted(DrumConstants.kMotorInverted)
-            .idleMode(IdleMode.kBrake)
+            .idleMode(DrumConstants.kIdleModeSparkMax)
             .smartCurrentLimit(DrumConstants.kCurrentLimit);
 
         m_config.encoder
@@ -46,7 +46,7 @@ public class DrumIOSparkMax implements DrumIO {
 
         m_config.closedLoop.maxMotion
             .maxAcceleration(DrumConstants.kMaxAcceleration)
-            .allowedProfileError(0.01);
+            .allowedProfileError(DrumConstants.kAllowedProfileError);
 
         m_config.softLimit
             .forwardSoftLimitEnabled(false)

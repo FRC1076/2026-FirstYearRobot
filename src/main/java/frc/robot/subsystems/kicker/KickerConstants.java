@@ -1,10 +1,13 @@
 package frc.robot.subsystems.kicker;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
 public class KickerConstants {
     public static final int kMotorID = 1; // ADD
 
     // Current limits
-    public static final int kCurrentLimit = 20;
+    public static final int kCurrentLimit = 40;
 
     public static final boolean kMotorInverted = false; // SWITCH?
 
@@ -13,7 +16,10 @@ public class KickerConstants {
 
     // public static final double kPositionFactor = 2 * Math.PI / kMotorToRotationsRatio;
     // public static final double kVelocityFactor = kPositionFactor / 60;
-    public static final double kMaxAcceleration = 0; // FIND
+    public static final double kMaxAcceleration = 1000000; // FIND
+    public static final double kAllowedProfileError = 0.05;
+    public static final NeutralMode kNeutralModeTalonSRX = NeutralMode.Brake;
+    public static final IdleMode kIdleModeSparkMax = IdleMode.kBrake;
 
 
     // Closed-loop (TUNE ALL)

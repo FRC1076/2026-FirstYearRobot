@@ -13,7 +13,7 @@ public class KickerIOTalonSRX implements KickerIO {
         m_motor.configFactoryDefault();
 
         m_motor.setInverted(KickerConstants.kMotorInverted);
-        m_motor.setNeutralMode(NeutralMode.Brake);
+        m_motor.setNeutralMode(KickerConstants.kNeutralModeTalonSRX);
         m_motor.enableCurrentLimit(true);
         m_motor.configPeakCurrentLimit(KickerConstants.kCurrentLimit);
         
@@ -44,7 +44,7 @@ public class KickerIOTalonSRX implements KickerIO {
 
         inputs.motorCurrentAmps = m_motor.getStatorCurrent();
 
-        inputs.motorTempDegC = m_motor.getTemperature();
+        // inputs.motorTempDegC = m_motor.getTemperature();
 
     }
 
