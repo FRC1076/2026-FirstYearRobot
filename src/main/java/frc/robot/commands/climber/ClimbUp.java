@@ -2,7 +2,6 @@ package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.fuel.*;
 import frc.robot.subsystems.climber.*;
 
 import static frc.robot.Constants.ClimbConstants.*;

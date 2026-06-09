@@ -17,6 +17,7 @@ public class RollerSubsystem extends SubsystemBase {
         this.io = io;
     }
 
+    @Override
     public void periodic() {
         io.updateInputs(inputs);
         Logger.processInputs("Roller", inputs);
@@ -39,9 +40,16 @@ public class RollerSubsystem extends SubsystemBase {
     }
 
     /** Run the Roller motor at supplied voltage */ //????
-    public Command runVoltage(Double volts) {
+    public Command runVoltage(double volts) {
         return Commands.run(
             () -> io.setVoltage(volts),
+            this
+        );
+    }
+
+    public Command setVelocity(double radPerSec) {
+        return Commands.runOnce(
+            () -> io.setVelocity(radPerSec),
             this
         );
     }
@@ -53,7 +61,7 @@ public class RollerSubsystem extends SubsystemBase {
 
     /** Gets the roller motor's voltage */
     public double getVoltage() {
-        return inputs.motorAppliedVoltage[1];
+        return inputs.motorAppliedVoltage[0];
     }
     
 }

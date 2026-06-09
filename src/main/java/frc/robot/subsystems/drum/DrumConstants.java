@@ -1,17 +1,14 @@
-package frc.robot.subsystems.roller;
+package frc.robot.subsystems.drum;
 
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-public class RollerConstants {
-    // Motor ports
-    public static final int kLeadMotorID = 10;
-    public static final int kFollowMotorID = 9;
+public class DrumConstants {
+    public static final int kMotorID = 0; // ADD
 
     // Current limits
-    public static final int kCurrentLimit = 40;
+    public static final int kCurrentLimit = 20;
 
-    public static final boolean kLeadMotorInverted = true; 
-    public static final boolean kFollowMotorInverted = false;
+    public static final boolean kMotorInverted = false; // SWITCH?
 
     // Gear ratio
     public static final double kMotorToRotationsRatio = 1.0; // FIND
