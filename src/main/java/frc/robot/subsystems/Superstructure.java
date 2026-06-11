@@ -39,26 +39,38 @@ public class Superstructure {
         return m_slapdown.applyPosition(SuperstructureConstants.kSlapdownSlappingAngleRadians);
     }
 
-    // public Command shoot(int positionNumber) {
-    //     if (positionNumber == 1) {
-    //         return Commands.parallel(
-    //             m_kicker.setVoltage(SuperstructureConstants.java)
-    //         );
+    public Command shoot(int positionNumber) {
+        if (positionNumber == 1) {
+            return Commands.parallel(
+                m_kicker.setVoltage(SuperstructureConstants.kInFrontOfBumpKickerVoltage),
+                m_drum.setVoltage(SuperstructureConstants.kInFrontOfBumpDrumVoltage)
+            );
 
-    //     }
+        }
 
-    //     else if (positionNumber == 2) {
+        else if (positionNumber == 2) {
+            return Commands.parallel(
+                m_kicker.setVoltage(SuperstructureConstants.kInFrontOfClimberKickerVoltage),
+                m_drum.setVoltage(SuperstructureConstants.kInFrontOfClimberDrumVoltage)
+            );
+        }
+
+        else if (positionNumber == 3) {
+            return Commands.parallel(
+                m_kicker.setVoltage(SuperstructureConstants.kCornerKickerVoltage),
+                m_drum.setVoltage(SuperstructureConstants.kCornerDrumVoltage)
+            );
             
-    //     }
+        }
 
-    //     else if (positionNumber == 3) {
+        else {
+            return Commands.parallel(
+                m_kicker.setVoltage(1.0),
+                m_drum.setVoltage(1.0)
+            );
             
-    //     }
-
-    //     else {
-            
-    //     }
-    // }
+        }
+    }
 
     // SUPERSTRUCTURE WIP ||| SUPERSTRUCTURE WIP ||| SUPERSTRUCTURE WIP ||| SUPERSTRUCTURE WIP ||| SUPERSTRUCTURE WIP
 
