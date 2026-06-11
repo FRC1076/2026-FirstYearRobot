@@ -4,12 +4,12 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class SlapdownConstants {
     // Motor IDs
-    public static final int kMotorID = 0; // ADD
+    public static final int kMotorID = 31; // ADD
 
     // Current limits
     public static final int kCurrentLimit = 20;
 
-    public static final boolean kInverted = false; 
+    public static final boolean kInverted = true; 
 
     // Gear ratio
     public static final double kMotorToRotationsRatio = 100; // motor rotations to output rotations

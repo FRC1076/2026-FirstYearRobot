@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+
 import com.ctre.phoenix6.SignalLogger;
 import com.revrobotics.util.StatusLogger;
 
@@ -29,6 +32,8 @@ public class Robot extends TimedRobot {
     public Robot() {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
+        Logger.addDataReceiver(new NT4Publisher());
+        
         m_robotContainer = new RobotContainer();
 
         SignalLogger.enableAutoLogging(SystemConstants.kEnableSignalLogger);
