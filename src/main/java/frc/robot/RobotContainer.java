@@ -122,6 +122,7 @@ public class RobotContainer {
         m_driverController.rightBumper().whileTrue(teleopDriveCommand.applySingleClutch());
         m_driverController.leftTrigger().whileTrue(rollerSubsystem.runVoltage(3.0)); // INTAKE
         m_driverController.x().whileTrue(slapdownSubsystem.applyPosition(Math.PI / 2));
+        m_driverController.y().whileTrue(slapdownSubsystem.applyPosition(0));
         // m_driverController.rightTrigger().whileTrue(); // SHOOT
 
         // While the left bumper on operator controller is held, intake Fuel
