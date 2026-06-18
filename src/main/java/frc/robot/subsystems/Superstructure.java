@@ -22,6 +22,8 @@ public class Superstructure {
     // private final BeltSubsystem m_belts;
     // private final ClimberSubsystem m_climber;
 
+    private boolean isShooting = false;
+
     public Superstructure(DriveSubsystem drive, DrumSubsystem drum, KickerSubsystem kicker, RollerSubsystem roller, SlapdownSubsystem slapdown) {
         this.m_drive = drive;
         this.m_drum = drum;
@@ -40,7 +42,8 @@ public class Superstructure {
     }
 
     public Command shoot(int positionNumber) {
-        if (positionNumber == 1) {
+        isShooting = !isShooting;
+        if (positionNumber == 1 && isShooting == true) {
             return Commands.parallel(
                 m_kicker.setVoltage(SuperstructureConstants.kInFrontOfBumpKickerVoltage),
                 m_drum.setVoltage(SuperstructureConstants.kInFrontOfBumpDrumVoltage)
@@ -48,14 +51,14 @@ public class Superstructure {
 
         }
 
-        else if (positionNumber == 2) {
+        else if (positionNumber == 2 && isShooting == true) {
             return Commands.parallel(
                 m_kicker.setVoltage(SuperstructureConstants.kInFrontOfClimberKickerVoltage),
                 m_drum.setVoltage(SuperstructureConstants.kInFrontOfClimberDrumVoltage)
             );
         }
 
-        else if (positionNumber == 3) {
+        else if (positionNumber == 3 && isShooting == true) {
             return Commands.parallel(
                 m_kicker.setVoltage(SuperstructureConstants.kCornerKickerVoltage),
                 m_drum.setVoltage(SuperstructureConstants.kCornerDrumVoltage)
@@ -65,14 +68,12 @@ public class Superstructure {
 
         else {
             return Commands.parallel(
-                m_kicker.setVoltage(1.0),
-                m_drum.setVoltage(1.0)
+                m_kicker.stop(),
+                m_drum.stop()
             );
             
         }
     }
-
-    // SUPERSTRUCTURE WIP ||| SUPERSTRUCTURE WIP ||| SUPERSTRUCTURE WIP ||| SUPERSTRUCTURE WIP ||| SUPERSTRUCTURE WIP
 
 
 }

@@ -13,14 +13,20 @@ import frc.robot.commands.climber.ClimbUp;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.commands.drive.TeleopDriveCommandV2;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Superstructure;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.climber.*;
 import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.Common.Drive;
+import frc.robot.subsystems.drum.DrumIOSparkMax;
+import frc.robot.subsystems.drum.DrumSubsystem;
+import frc.robot.subsystems.kicker.KickerIOSparkMax;
+import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.ModuleConfig;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.roller.RollerSubsystem;
 import frc.robot.subsystems.roller.RollerIOSparkMax;
 import frc.robot.subsystems.slapdown.SlapdownSubsystem;
+import lib.hardware.hid.SamuraiXboxController;
 import frc.robot.subsystems.slapdown.SlapdownConstants;
 import frc.robot.subsystems.slapdown.SlapdownIOSparkMax;
 import frc.robot.subsystems.drive.GyroIO;
@@ -57,13 +63,19 @@ public class RobotContainer {
 
     private final SlapdownSubsystem slapdownSubsystem;
 
+    private final DrumSubsystem drumSubsystem;
+
+    private final KickerSubsystem kickerSubsystem;
+
+    private final Superstructure superstructure;
+
     private final TeleopDriveCommandV2 teleopDriveCommand;
 
     // The driver's controller
-    private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+    private final SamuraiXboxController m_driverController = new SamuraiXboxController(OperatorConstants.kDriverControllerPort);
 
     // The operator's controller
-    private final CommandXboxController operatorController = new CommandXboxController(OperatorConstants.kOperatorControllerPort);
+    private final SamuraiXboxController operatorController = new SamuraiXboxController(OperatorConstants.kOperatorControllerPort);
 
     // The autonomous chooser
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -81,6 +93,8 @@ public class RobotContainer {
         );
         rollerSubsystem = new RollerSubsystem(new RollerIOSparkMax());
         slapdownSubsystem = new SlapdownSubsystem(new SlapdownIOSparkMax());
+        drumSubsystem = new DrumSubsystem(new DrumIOSparkMax());
+        kickerSubsystem = new KickerSubsystem(new KickerIOSparkMax());
 
         //fuelSubsystem = new FuelSubsystem();
         //climberSubsystem = new ClimberSubsystem();
@@ -100,6 +114,8 @@ public class RobotContainer {
             false
         );
 
+        superstructure = new Superstructure(driveSubsystem, drumSubsystem, kickerSubsystem, rollerSubsystem, slapdownSubsystem);
+
         configureBindings();
     }
 
@@ -118,45 +134,22 @@ public class RobotContainer {
     private void configureBindings() {
         driveSubsystem.setDefaultCommand(teleopDriveCommand);
 
+        // driver controls (hopefully not temp)
+
         m_driverController.leftBumper().whileTrue(teleopDriveCommand.applyDoubleClutch());
         m_driverController.rightBumper().whileTrue(teleopDriveCommand.applySingleClutch());
+        
+        m_driverController.povUp().onTrue(superstructure.shoot(1));
+        m_driverController.povLeft().onTrue(superstructure.shoot(2));
+        m_driverController.povDown().onTrue(superstructure.shoot(3));
+
+        m_driverController.b().onTrue(superstructure.intake(3.0));
+        m_driverController.a().onTrue(superstructure.slapdown());
+
+        // subsystem testing controls (TEMP)
+
         m_driverController.leftTrigger().whileTrue(rollerSubsystem.runVoltage(3.0)); // INTAKE
         m_driverController.x().whileTrue(slapdownSubsystem.applyPosition(Math.PI / 2));
-        // m_driverController.rightTrigger().whileTrue(); // SHOOT
-
-        // While the left bumper on operator controller is held, intake Fuel
-
-        //m_driverController.leftTrigger().whileTrue(new Intake(fuelSubsystem));
-
-        // While the right bumper on the operator controller is held, spin up for 1
-        // second, then launch fuel. When the button is released, stop.
-
-        //m_driverController.rightTrigger().whileTrue(new LaunchSequence(fuelSubsystem));
-
-        // While the A button is held on the operator controller, eject fuel back out
-        // the intake
-
-        //m_driverController.a().whileTrue(new Eject(fuelSubsystem));
-
-       // While the down arrow on the directional pad is held it will unclimb the robot
-
-        //m_driverController.povDown().whileTrue(new ClimbDown(climberSubsystem));
-
-        // While the up arrow on the directional pad is held it will cimb the robot
-
-        //m_driverController.povUp().whileTrue(new ClimbUp(climberSubsystem));
-
-        // Set the default command for the drive subsystem to the command provided by
-        // factory with the values provided by the joystick axes on the driver
-        // controller. The Y axis of the controller is inverted so that pushing the
-        // stick away from you (a negative value) drives the robot forwards (a positive
-        // value)
-
-        //driveSubsystem.setDefaultCommand(new Drive(driveSubsystem, m_driverController)); <-- may add back in later
-
-        //fuelSubsystem.setDefaultCommand(fuelSubsystem.run(() -> fuelSubsystem.stop()));
-
-        //climberSubsystem.setDefaultCommand(climberSubsystem.run(() -> climberSubsystem.stop()));
     }
 
     /**
