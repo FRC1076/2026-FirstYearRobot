@@ -63,6 +63,8 @@ public class SlapdownIOSparkMax implements SlapdownIO {
         
         m_encoder = m_motor.getEncoder();
 
+        m_encoder.setPosition(0);
+
     }
 
     public void setVoltage(double volts) {

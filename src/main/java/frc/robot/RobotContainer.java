@@ -142,6 +142,17 @@ public class RobotContainer {
         m_driverController.povUp().onTrue(superstructure.shoot(1));
         m_driverController.povLeft().onTrue(superstructure.shoot(2));
         m_driverController.povDown().onTrue(superstructure.shoot(3));
+        m_driverController.leftTrigger().whileTrue(rollerSubsystem.runVoltage(3.0)); // INTAKE
+        m_driverController.x().whileTrue(slapdownSubsystem.applyPosition(Math.PI / 2));
+        m_driverController.y().whileTrue(slapdownSubsystem.applyPosition(0));
+        // m_driverController.rightTrigger().whileTrue(); // SHOOT
+
+        // While the left bumper on operator controller is held, intake Fuel
+
+        //m_driverController.leftTrigger().whileTrue(new Intake(fuelSubsystem));
+
+        // While the right bumper on the operator controller is held, spin up for 1
+        // second, then launch fuel. When the button is released, stop.
 
         m_driverController.b().onTrue(superstructure.intake(3.0));
         m_driverController.a().onTrue(superstructure.slapdown());
