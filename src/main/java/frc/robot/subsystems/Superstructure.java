@@ -22,6 +22,8 @@ public class Superstructure {
     // private final BeltSubsystem m_belts;
     // private final ClimberSubsystem m_climber;
 
+    private boolean isShooting = false;
+
     public Superstructure(DriveSubsystem drive, DrumSubsystem drum, KickerSubsystem kicker, RollerSubsystem roller, SlapdownSubsystem slapdown) {
         this.m_drive = drive;
         this.m_drum = drum;
@@ -39,28 +41,39 @@ public class Superstructure {
         return m_slapdown.applyPosition(SuperstructureConstants.kSlapdownSlappingAngleRadians);
     }
 
-    // public Command shoot(int positionNumber) {
-    //     if (positionNumber == 1) {
-    //         return Commands.parallel(
-    //             m_kicker.setVoltage(SuperstructureConstants.java)
-    //         );
+    public Command shoot(int positionNumber) {
+        isShooting = !isShooting;
+        if (positionNumber == 1 && isShooting == true) {
+            return Commands.parallel(
+                m_kicker.setVoltage(SuperstructureConstants.kInFrontOfBumpKickerVoltage),
+                m_drum.setVoltage(SuperstructureConstants.kInFrontOfBumpDrumVoltage)
+            );
 
-    //     }
+        }
 
-    //     else if (positionNumber == 2) {
+        else if (positionNumber == 2 && isShooting == true) {
+            return Commands.parallel(
+                m_kicker.setVoltage(SuperstructureConstants.kInFrontOfClimberKickerVoltage),
+                m_drum.setVoltage(SuperstructureConstants.kInFrontOfClimberDrumVoltage)
+            );
+        }
+
+        else if (positionNumber == 3 && isShooting == true) {
+            return Commands.parallel(
+                m_kicker.setVoltage(SuperstructureConstants.kCornerKickerVoltage),
+                m_drum.setVoltage(SuperstructureConstants.kCornerDrumVoltage)
+            );
             
-    //     }
+        }
 
-    //     else if (positionNumber == 3) {
+        else {
+            return Commands.parallel(
+                m_kicker.stop(),
+                m_drum.stop()
+            );
             
-    //     }
-
-    //     else {
-            
-    //     }
-    // }
-
-    // SUPERSTRUCTURE WIP ||| SUPERSTRUCTURE WIP ||| SUPERSTRUCTURE WIP ||| SUPERSTRUCTURE WIP ||| SUPERSTRUCTURE WIP
+        }
+    }
 
 
 }
