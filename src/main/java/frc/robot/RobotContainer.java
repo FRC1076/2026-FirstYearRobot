@@ -139,9 +139,9 @@ public class RobotContainer {
         m_driverController.leftBumper().whileTrue(teleopDriveCommand.applyDoubleClutch());
         m_driverController.rightBumper().whileTrue(teleopDriveCommand.applySingleClutch());
         
-        m_driverController.povUp().onTrue(superstructure.shoot(1));
-        m_driverController.povLeft().onTrue(superstructure.shoot(2));
-        m_driverController.povDown().onTrue(superstructure.shoot(3));
+        m_driverController.povUp().toggleOnTrue(superstructure.shoot(1));
+        m_driverController.povLeft().toggleOnTrue(superstructure.shoot(2));
+        m_driverController.povDown().toggleOnTrue(superstructure.shoot(3));
 
         m_driverController.b().onTrue(superstructure.intake(3.0));
         m_driverController.a().onTrue(superstructure.slapdown());
