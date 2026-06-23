@@ -27,9 +27,9 @@ public class DrumSubsystem extends SubsystemBase {
         return inputs.motorVelocityRadPerSec;
     }
 
-    /** Set the motors to the specific voltages */
+    /** Run at volts while scheduled, stop when the command ends */
     public Command setVoltage(double volts) {
-        return Commands.runOnce (() -> io.setVoltage(volts), this);
+        return startEnd(() -> io.setVoltage(volts), () -> io.setVoltage(0));
     }
 
     /** Run the Drum motors at supplied voltages */

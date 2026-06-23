@@ -36,6 +36,7 @@ import frc.robot.subsystems.drive.ModuleIOHardware;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -145,6 +146,8 @@ public class RobotContainer {
 
         m_driverController.b().onTrue(superstructure.intake(3.0));
         m_driverController.a().onTrue(superstructure.slapdown());
+
+        m_driverController.rightTrigger().onTrue(Commands.runOnce(() -> driveSubsystem.rezeroGyro()));
         
         // subsystem testing controls (TEMP)
 
