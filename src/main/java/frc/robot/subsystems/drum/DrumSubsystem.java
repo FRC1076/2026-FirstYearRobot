@@ -24,7 +24,7 @@ public class DrumSubsystem extends SubsystemBase {
 
     /** Get the Drum motors velocities */
     public double getVelocity() {
-        return inputs.motorVelocityRadPerSec;
+        return inputs.motorVelocityRadPerSec[0];
     }
 
     /** Run at volts while scheduled, stop when the command ends */
@@ -48,7 +48,7 @@ public class DrumSubsystem extends SubsystemBase {
 
     /** Gets the Drum motors voltage */
     public double getVoltage() {
-        return inputs.motorAppliedVoltage;
+        return inputs.motorAppliedVoltage[0];
     }
 
 }

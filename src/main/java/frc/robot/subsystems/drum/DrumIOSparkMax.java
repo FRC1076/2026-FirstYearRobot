@@ -13,55 +13,64 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
 public class DrumIOSparkMax implements DrumIO {
-    private final SparkMax m_motor;
+    private final SparkMax m_leadMotor;
+    private final SparkMax m_followMotor;
 
     private final SparkClosedLoopController m_PidController;
 
-    private final RelativeEncoder m_encoder;
+    private final RelativeEncoder m_leadEncoder;
+    private final RelativeEncoder m_followEncoder;
 
     public DrumIOSparkMax() {
-        m_motor = new SparkMax(DrumConstants.kMotorID, MotorType.kBrushless);
+        m_leadMotor = new SparkMax(DrumConstants.kLeadMotorID, MotorType.kBrushless);
+        m_followMotor = new SparkMax(DrumConstants.kFollowMotorID, MotorType.kBrushless);
         
-        SparkMaxConfig m_config = new SparkMaxConfig();
+        SparkMaxConfig m_leadConfig = new SparkMaxConfig();
+        SparkMaxConfig m_followConfig = new SparkMaxConfig();
 
-        m_config
-            .inverted(DrumConstants.kMotorInverted)
+        m_leadConfig
+            .inverted(DrumConstants.kLeadMotorInverted)
             .idleMode(DrumConstants.kIdleModeSparkMax)
             .smartCurrentLimit(DrumConstants.kCurrentLimit);
 
-        m_config.encoder
+        m_leadConfig.encoder
             .positionConversionFactor(DrumConstants.kPositionFactor)
             .velocityConversionFactor(DrumConstants.kVelocityFactor);
 
-        m_config.closedLoop
+        m_leadConfig.closedLoop
             .p(DrumConstants.kP)
             .i(DrumConstants.kI)
             .d(DrumConstants.kD)
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
         
-        m_config.closedLoop.feedForward
+        m_leadConfig.closedLoop.feedForward
             .kS(DrumConstants.kS)
             .kV(DrumConstants.kV)
             .kA(DrumConstants.kA);
 
-        m_config.closedLoop.maxMotion
+        m_leadConfig.closedLoop.maxMotion
             .maxAcceleration(DrumConstants.kMaxAcceleration)
             .allowedProfileError(DrumConstants.kAllowedProfileError);
 
-        m_config.softLimit
+        m_leadConfig.softLimit
             .forwardSoftLimitEnabled(false)
             .reverseSoftLimitEnabled(false);
+
+        m_followConfig
+            .follow(m_leadMotor, DrumConstants.kFollowMotorInverted);
         
-        m_motor.configure(m_config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_leadMotor.configure(m_leadConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
+        m_followMotor.configure(m_followConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        m_PidController = m_motor.getClosedLoopController();
+        m_PidController = m_leadMotor.getClosedLoopController();
 
-        m_encoder = m_motor.getEncoder();
+        m_leadEncoder = m_leadMotor.getEncoder();
+        m_followEncoder = m_followMotor.getEncoder();
     }
 
     @Override
     public void setVoltage(double volts) {
-        m_motor.setVoltage(volts);
+        m_leadMotor.setVoltage(volts);
     }
 
     @Override
@@ -71,18 +80,22 @@ public class DrumIOSparkMax implements DrumIO {
 
     @Override
     public void updateInputs(DrumIOInputs inputs) {
-        inputs.motorAppliedVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage();
+        inputs.motorAppliedVoltage[0] = m_leadMotor.getAppliedOutput() * m_leadMotor.getBusVoltage();
+        inputs.motorAppliedVoltage[1] = m_followMotor.getAppliedOutput() * m_followMotor.getBusVoltage();
 
-        inputs.motorCurrentAmps = m_motor.getOutputCurrent();
+        inputs.motorCurrentAmps[0] = m_leadMotor.getOutputCurrent();
+        inputs.motorCurrentAmps[1] = m_followMotor.getOutputCurrent();
 
-        inputs.motorTempDegC = m_motor.getMotorTemperature();
+        inputs.motorVelocityRadPerSec[0] = m_leadEncoder.getVelocity();
+        inputs.motorVelocityRadPerSec[1] = m_followEncoder.getVelocity();
 
-        inputs.motorVelocityRadPerSec = m_encoder.getVelocity();
+        inputs.motorTempDegC[0] = m_leadMotor.getMotorTemperature();
+        inputs.motorTempDegC[1] = m_followMotor.getMotorTemperature();
     }
 
     @Override 
     public void stop() {
-        m_motor.setVoltage(0);
+        m_leadMotor.setVoltage(0);
     }
     
 }

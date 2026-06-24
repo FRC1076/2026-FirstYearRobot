@@ -3,12 +3,14 @@ package frc.robot.subsystems.drum;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class DrumConstants {
-    public static final int kMotorID = 0; // ADD
+    public static final int kLeadMotorID = 0;
+    public static final int kFollowMotorID = 1; // ADD
 
     // Current limits
     public static final int kCurrentLimit = 20;
 
-    public static final boolean kMotorInverted = false; // SWITCH?
+    public static final boolean kLeadMotorInverted = false; 
+    public static final boolean kFollowMotorInverted = true; // switch?
 
     // Gear ratio
     public static final double kMotorToRotationsRatio = 1.0; // FIND

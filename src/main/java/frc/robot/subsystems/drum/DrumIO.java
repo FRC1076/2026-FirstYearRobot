@@ -5,10 +5,10 @@ import org.littletonrobotics.junction.AutoLog;
 public interface DrumIO {
     @AutoLog
     public static class DrumIOInputs {
-        public double motorAppliedVoltage = 0;
-        public double motorCurrentAmps = 0;
-        public double motorTempDegC = 0;
-        public double motorVelocityRadPerSec = 0;
+        public double[] motorAppliedVoltage = new double[2];
+        public double[] motorCurrentAmps = new double[2];
+        public double[] motorTempDegC = new double[2];
+        public double[] motorVelocityRadPerSec = new double[2];
     }
     
     public abstract void setVoltage(double volts);

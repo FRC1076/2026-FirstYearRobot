@@ -16,8 +16,10 @@ public class DrumIODisabled implements DrumIO {
 
     @Override
     public void updateInputs(DrumIOInputs inputs) {
-        inputs.motorAppliedVoltage = voltageTarget;
-        inputs.motorVelocityRadPerSec = velocityTarget;
+        inputs.motorAppliedVoltage[0] = voltageTarget;
+        inputs.motorVelocityRadPerSec[0] = velocityTarget;
+        inputs.motorAppliedVoltage[1] = voltageTarget;
+        inputs.motorVelocityRadPerSec[1] = velocityTarget;
     }
 
     @Override
