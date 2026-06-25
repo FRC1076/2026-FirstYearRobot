@@ -4,7 +4,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class SlapdownConstants {
     // Motor IDs
-    public static final int kMotorID = 31; // ADD
+    public static final int kMotorID = 11;
 
     // Current limits
     public static final int kCurrentLimit = 20;

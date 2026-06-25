@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class KickerConstants {
-    public static final int kMotorID = 1; // ADD
+    public static final int kMotorID = 30;
 
     // Current limits
     public static final int kCurrentLimit = 40;

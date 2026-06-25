@@ -3,8 +3,8 @@ package frc.robot.subsystems.drum;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 public class DrumConstants {
-    public static final int kLeadMotorID = 0;
-    public static final int kFollowMotorID = 1; // ADD
+    public static final int kLeadMotorID = 31;
+    public static final int kFollowMotorID = 32;
 
     // Current limits
     public static final int kCurrentLimit = 20;
