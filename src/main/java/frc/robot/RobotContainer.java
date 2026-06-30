@@ -135,25 +135,26 @@ public class RobotContainer {
     private void configureBindings() {
         driveSubsystem.setDefaultCommand(teleopDriveCommand);
 
-        // driver controls (hopefully not temp)
+        // driver controls 
 
-        m_driverController.leftBumper().whileTrue(teleopDriveCommand.applyDoubleClutch());
-        m_driverController.rightBumper().whileTrue(teleopDriveCommand.applySingleClutch());
+        m_driverController.povUp().toggleOnTrue(superstructure.shootPreset(1));
+        m_driverController.povLeft().toggleOnTrue(superstructure.shootPreset(2));
+        m_driverController.povDown().toggleOnTrue(superstructure.shootPreset(3));
+        m_driverController.povRight().toggleOnTrue(superstructure.shootPreset(4));
         
-        m_driverController.povUp().toggleOnTrue(superstructure.shoot(1));
-        m_driverController.povLeft().toggleOnTrue(superstructure.shoot(2));
-        m_driverController.povDown().toggleOnTrue(superstructure.shoot(3));
+        m_driverController.a().whileTrue(superstructure.agitateHopper());
+        m_driverController.b().onTrue(superstructure.intakeUp());
 
-        m_driverController.b().onTrue(superstructure.intake(3.0));
-        m_driverController.a().onTrue(superstructure.slapdown());
+        m_driverController.leftTrigger().whileTrue(superstructure.intake(3.0));
+        m_driverController.rightTrigger().whileTrue(superstructure.shoot());
 
-        m_driverController.rightTrigger().onTrue(Commands.runOnce(() -> driveSubsystem.rezeroGyro()));
+        m_driverController.start().onTrue(Commands.runOnce(() -> driveSubsystem.rezeroGyro()));
+
         
         // subsystem testing controls (TEMP)
 
-        m_driverController.leftTrigger().whileTrue(rollerSubsystem.runVoltage(3.0)); // INTAKE
-        m_driverController.x().whileTrue(slapdownSubsystem.applyPosition(Math.PI / 2));
-        m_driverController.y().whileTrue(slapdownSubsystem.applyPosition(0));
+        m_driverController.x().onTrue(slapdownSubsystem.applyPosition(Math.PI / 2));
+        m_driverController.y().onTrue(slapdownSubsystem.applyPosition(0));
     }
 
     /**
