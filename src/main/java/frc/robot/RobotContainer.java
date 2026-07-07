@@ -20,6 +20,7 @@ import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.Common.Drive;
 import frc.robot.subsystems.drum.DrumIOSparkMax;
 import frc.robot.subsystems.drum.DrumSubsystem;
 import frc.robot.subsystems.kicker.KickerIOSparkMax;
+import frc.robot.subsystems.kicker.KickerIOTalonSRX;
 import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.ModuleConfig;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -95,7 +96,7 @@ public class RobotContainer {
         rollerSubsystem = new RollerSubsystem(new RollerIOSparkMax());
         slapdownSubsystem = new SlapdownSubsystem(new SlapdownIOSparkMax());
         drumSubsystem = new DrumSubsystem(new DrumIOSparkMax());
-        kickerSubsystem = new KickerSubsystem(new KickerIOSparkMax());
+        kickerSubsystem = new KickerSubsystem(new KickerIOTalonSRX());
 
         //fuelSubsystem = new FuelSubsystem();
         //climberSubsystem = new ClimberSubsystem();
@@ -145,7 +146,7 @@ public class RobotContainer {
         m_driverController.a().whileTrue(superstructure.agitateHopper());
         m_driverController.b().onTrue(superstructure.intakeUp());
 
-        m_driverController.leftTrigger().whileTrue(superstructure.intake(3.0));
+        m_driverController.leftTrigger().whileTrue(superstructure.intake(6.0)).onFalse(superstructure.intake(0));
         m_driverController.rightTrigger().whileTrue(superstructure.shoot());
 
         m_driverController.start().onTrue(Commands.runOnce(() -> driveSubsystem.rezeroGyro()));

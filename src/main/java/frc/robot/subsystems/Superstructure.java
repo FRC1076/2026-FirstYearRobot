@@ -22,7 +22,7 @@ public class Superstructure {
     // private final BeltSubsystem m_belts;
     // private final ClimberSubsystem m_climber;
 
-    private double kickerVoltage = 0.0;
+    private double kickerVoltage = 12.0;
 
     public Superstructure(DriveSubsystem drive, DrumSubsystem drum, KickerSubsystem kicker, RollerSubsystem roller, SlapdownSubsystem slapdown) {
         this.m_drive = drive;

@@ -9,8 +9,8 @@ public class DrumConstants {
     // Current limits
     public static final int kCurrentLimit = 20;
 
-    public static final boolean kLeadMotorInverted = false; 
-    public static final boolean kFollowMotorInverted = true; // switch?
+    public static final boolean kLeadMotorInverted = true; 
+    public static final boolean kFollowMotorInverted = false; // switch?
 
     // Gear ratio
     public static final double kMotorToRotationsRatio = 1.0; // FIND

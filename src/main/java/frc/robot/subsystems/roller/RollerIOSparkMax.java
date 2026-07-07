@@ -62,7 +62,7 @@ public class RollerIOSparkMax implements RollerIO {
             .reverseSoftLimitEnabled(false);
         
         m_followConfig
-            .follow(m_leadMotor, RollerConstants.kFollowMotorInverted);
+            .follow(m_leadMotor, RollerConstants.kLeadMotorInverted != RollerConstants.kFollowMotorInverted);
 
         m_leadMotor.configure(m_leadConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         m_followMotor.configure(m_followConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);

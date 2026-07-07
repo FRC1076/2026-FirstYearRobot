@@ -57,7 +57,7 @@ public class DrumIOSparkMax implements DrumIO {
             .reverseSoftLimitEnabled(false);
 
         m_followConfig
-            .follow(m_leadMotor, DrumConstants.kFollowMotorInverted);
+            .follow(m_leadMotor, DrumConstants.kLeadMotorInverted != DrumConstants.kFollowMotorInverted);
         
         m_leadMotor.configure(m_leadConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         m_followMotor.configure(m_followConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);

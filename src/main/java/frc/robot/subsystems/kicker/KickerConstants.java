@@ -9,7 +9,7 @@ public class KickerConstants {
     // Current limits
     public static final int kCurrentLimit = 40;
 
-    public static final boolean kMotorInverted = false; // SWITCH?
+    public static final boolean kMotorInverted = true; // SWITCH?
 
     // Gear ratio
     public static final double kMotorToRotationsRatio = 1.0; // FIND
