@@ -29,7 +29,7 @@ public class DrumSubsystem extends SubsystemBase {
 
     /** Run at volts while scheduled, stop when the command ends */
     public Command setVoltage(double volts) {
-        return startEnd(() -> io.setVoltage(volts), () -> io.setVoltage(0));
+        return startEnd(() -> io.setVoltage(volts), () -> io.stop());
     }
 
     /** Run the Drum motors at supplied voltages */
@@ -37,8 +37,14 @@ public class DrumSubsystem extends SubsystemBase {
         return Commands.run (() -> io.setVoltage(volts.getAsDouble()), this);
     }
 
+    /** Run at velocity while scheduled, stop when the command ends */
     public Command setVelocity(double radPerSec) {
-        return Commands.runOnce(() -> io.setVelocity(radPerSec), this);
+        return startEnd(() -> io.setVelocity(radPerSec), () -> io.stop());
+    }
+
+    /** Run the Drum motors at supplied velocities */
+    public Command runVelocity(DoubleSupplier radPerSec) {
+        return Commands.run (() -> io.setVelocity(radPerSec.getAsDouble()), this);
     }
 
     /** Stop the Drum's motors */
