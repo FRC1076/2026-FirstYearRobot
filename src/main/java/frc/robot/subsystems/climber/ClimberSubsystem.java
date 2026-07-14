@@ -22,7 +22,7 @@ public class ClimberSubsystem extends SubsystemBase {
     // create the configuration for the climb moter, set a current limit and apply
     // the config to the controller
     SparkMaxConfig climbConfig = new SparkMaxConfig();
-    climbConfig.smartCurrentLimit(CLIMBER_MOTOR_CURRENT_LIMIT);
+    climbConfig.smartCurrentLimit(CLIMBER_MOTOR_CURRENT_LIMIT); // power limit
     climbConfig.idleMode(IdleMode.kBrake);
     climberMotor.configure(climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
