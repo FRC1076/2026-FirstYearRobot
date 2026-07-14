@@ -81,7 +81,8 @@ public class Superstructure {
             return Commands.sequence (
                 m_slapdown.applyPosition(Math.PI / 2),
                 Commands.waitSeconds(1.5),
-                m_slapdown.applyPosition(0.0)
+                m_slapdown.applyPosition(0.0),
+                Commands.waitSeconds(1.5)
             );
         }
 
@@ -92,7 +93,8 @@ public class Superstructure {
                 Commands.waitSeconds(1.5),
                 m_slapdown.applyPosition(Math.PI / 2),
                 Commands.waitSeconds(1.5),
-                m_slapdown.applyPosition(0.0)
+                m_slapdown.applyPosition(0.0),
+                Commands.waitSeconds(1.5)
             );
         }
 

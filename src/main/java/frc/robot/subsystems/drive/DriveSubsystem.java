@@ -18,6 +18,9 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -31,9 +34,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.GameConstants;
 import frc.robot.commands.drive.TeleopDriveCommandV2;
+import lib.vision.CameraLocalizer;
+import lib.vision.PhotonVisionLocalizerWithTagPrioritization;
+import lib.vision.VisionLocalizationSystem;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.ModuleConfig;
@@ -57,6 +65,8 @@ public class DriveSubsystem extends SubsystemBase {
     }; // For delta tracking
 
     private final SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
+
+    private final VisionLocalizationSystem visionSystem = new VisionLocalizationSystem();
 
     public final DriveCommandFactory CommandBuilder;
 
@@ -90,6 +100,46 @@ public class DriveSubsystem extends SubsystemBase {
         
 
         OdometryThread.getInstance().start();
+
+        // Connect vision system and pose estimator
+        visionSystem.registerMeasurementConsumer((pose, timestamp, stddevs) -> {
+            poseEstimator.addVisionMeasurement(pose, timestamp, stddevs);
+        });
+
+        // Define locations of cameras relative to center (FIND)
+        Transform3d leftCameraLocation = new Transform3d(new Translation3d(0.3, 0.0, 0.5), new Rotation3d());
+        Transform3d rightCameraLocation = new Transform3d(new Translation3d(-0.3, 0.0, 0.5), new Rotation3d(0, 0, Math.PI));
+
+        // Create the camera objects
+        CameraLocalizer leftCamera = new PhotonVisionLocalizerWithTagPrioritization(
+            new PhotonCamera("LeftCam"), 
+            leftCameraLocation,
+            PhotonPoseEstimator.PoseStrategy primaryStrategy,
+            PhotonPoseEstimator.PoseStrategy multiTagFallbackStrategy,
+            Supplier<Rotation2d> headingSupplier,
+            AprilTagFieldLayout fieldLayout,
+            Matrix<N3, N1> defaultSingleStdDevs,
+            Matrix<N3, N1> defaultMultiStdDevs,
+            int[] priorityTags,
+            double priorityTagStdDevMultiplier 
+        );
+
+        CameraLocalizer rightCamera = new PhotonVisionLocalizerWithTagPrioritization(
+            new PhotonCamera("RightCam"), 
+            rightCameraLocation, 
+            PhotonPoseEstimator.PoseStrategy primaryStrategy,
+            PhotonPoseEstimator.PoseStrategy multiTagFallbackStrategy,
+            Supplier<Rotation2d> headingSupplier,
+            AprilTagFieldLayout fieldLayout,
+            Matrix<N3, N1> defaultSingleStdDevs,
+            Matrix<N3, N1> defaultMultiStdDevs,
+            int[] priorityTags,
+            double priorityTagStdDevMultiplier 
+        );
+
+        // Add the cameras to the vision system
+        visionSystem.addCamera(leftCamera);
+        visionSystem.addCamera(rightCamera);
 
         CommandBuilder = new DriveCommandFactory(this);
 
@@ -205,6 +255,9 @@ public class DriveSubsystem extends SubsystemBase {
         for (Module module : modules) {
             module.periodic();
         }
+
+        // Update vision system
+        visionSystem.updateAll();
 
         // Update odometry
         double[] sampleTimestamps = modules[0].getOdometryTimestamps();
