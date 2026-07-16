@@ -15,6 +15,7 @@ import static frc.robot.subsystems.drive.DriveConstants.ModuleConstants.Common.D
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -37,7 +38,10 @@ import frc.robot.commands.drive.TeleopDriveCommandV2;
 import lib.vision.CameraLocalizer;
 import lib.vision.PhotonVisionLocalizerWithTagPrioritization;
 import lib.vision.VisionLocalizationSystem;
+import frc.robot.PhysicalConstants;
+import frc.robot.PhysicalConstants.VisionConstants;
 
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonCamera;
@@ -66,9 +70,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     private final SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
 
-    private final VisionLocalizationSystem visionSystem = new VisionLocalizationSystem();
-
     public final DriveCommandFactory CommandBuilder;
+
+    public final VisionLocalizationSystem visionSystem;
 
     /** Create a new DriveSubsystem using the specified IO layers.
      *  
@@ -82,7 +86,8 @@ public class DriveSubsystem extends SubsystemBase {
         ModuleIO FLModuleIO,
         ModuleIO FRModuleIO,
         ModuleIO RLModuleIO,
-        ModuleIO RRModuleIO
+        ModuleIO RRModuleIO,
+        VisionLocalizationSystem VisionSystem
     ){
         this.gyroIO = gyroIO;
         /* // If the elevator is by the modules labeled front
@@ -97,49 +102,15 @@ public class DriveSubsystem extends SubsystemBase {
         modules[1] = new Module(RLModuleIO,"RearLeft");
         modules[2] = new Module(FRModuleIO, "FronRight");
         modules[3] = new Module(FLModuleIO, "FrontLeft");
-        
 
         OdometryThread.getInstance().start();
+
+        visionSystem = VisionSystem;
 
         // Connect vision system and pose estimator
         visionSystem.registerMeasurementConsumer((pose, timestamp, stddevs) -> {
             poseEstimator.addVisionMeasurement(pose, timestamp, stddevs);
         });
-
-        // Define locations of cameras relative to center (FIND)
-        Transform3d leftCameraLocation = new Transform3d(new Translation3d(0.3, 0.0, 0.5), new Rotation3d());
-        Transform3d rightCameraLocation = new Transform3d(new Translation3d(-0.3, 0.0, 0.5), new Rotation3d(0, 0, Math.PI));
-
-        // Create the camera objects
-        CameraLocalizer leftCamera = new PhotonVisionLocalizerWithTagPrioritization(
-            new PhotonCamera("LeftCam"), 
-            leftCameraLocation,
-            PhotonPoseEstimator.PoseStrategy primaryStrategy,
-            PhotonPoseEstimator.PoseStrategy multiTagFallbackStrategy,
-            Supplier<Rotation2d> headingSupplier,
-            AprilTagFieldLayout fieldLayout,
-            Matrix<N3, N1> defaultSingleStdDevs,
-            Matrix<N3, N1> defaultMultiStdDevs,
-            int[] priorityTags,
-            double priorityTagStdDevMultiplier 
-        );
-
-        CameraLocalizer rightCamera = new PhotonVisionLocalizerWithTagPrioritization(
-            new PhotonCamera("RightCam"), 
-            rightCameraLocation, 
-            PhotonPoseEstimator.PoseStrategy primaryStrategy,
-            PhotonPoseEstimator.PoseStrategy multiTagFallbackStrategy,
-            Supplier<Rotation2d> headingSupplier,
-            AprilTagFieldLayout fieldLayout,
-            Matrix<N3, N1> defaultSingleStdDevs,
-            Matrix<N3, N1> defaultMultiStdDevs,
-            int[] priorityTags,
-            double priorityTagStdDevMultiplier 
-        );
-
-        // Add the cameras to the vision system
-        visionSystem.addCamera(leftCamera);
-        visionSystem.addCamera(rightCamera);
 
         CommandBuilder = new DriveCommandFactory(this);
 
