@@ -22,7 +22,7 @@ public class Superstructure {
     // private final BeltSubsystem m_belts;
     // private final ClimberSubsystem m_climber;
 
-    private double kickerVoltage = 12.0;
+    private double kickerVoltage = 10.0;
 
     public Superstructure(DriveSubsystem drive, DrumSubsystem drum, KickerSubsystem kicker, RollerSubsystem roller, SlapdownSubsystem slapdown) {
         this.m_drive = drive;
@@ -33,10 +33,15 @@ public class Superstructure {
     }
     
     public Command intake(double volts) {
-        return Commands.parallel(
+        if (volts == 0) {
+            return m_roller.stop();
+        }
+        else {
+            return Commands.parallel(
             m_roller.runVoltage(volts),
             m_slapdown.applyPosition(SuperstructureConstants.kSlapdownDownSlappingAngleRadians)
-        );
+            );
+        }
     }
 
     public Command intakeUp() {
@@ -73,29 +78,18 @@ public class Superstructure {
     }
 
     public Command shoot() {
-        return m_kicker.setVoltage(kickerVoltage);
+        return m_kicker.runVoltage(() -> kickerVoltage);
     }
 
     public Command agitateHopper() {
-        if (m_slapdown.withinTolerance(0.0)) {
-            return Commands.sequence (
-                m_slapdown.applyPosition(Math.PI / 2),
-                Commands.waitSeconds(1.5),
-                m_slapdown.applyPosition(0.0)
-            );
-        }
-
-        else
-        {
-            return Commands.sequence (
-                m_slapdown.applyPosition(0.0),
-                Commands.waitSeconds(1.5),
-                m_slapdown.applyPosition(Math.PI / 2),
-                Commands.waitSeconds(1.5),
-                m_slapdown.applyPosition(0.0)
-            );
-        }
-
+        return Commands.sequence (
+            m_slapdown.applyPosition(SuperstructureConstants.kSlapdownUpSlappingAngleRadians),
+            Commands.waitSeconds(1.5),
+            m_slapdown.applyPosition(SuperstructureConstants.kSlapdownDownSlappingAngleRadians),
+            Commands.waitSeconds(1.5),
+            m_slapdown.applyPosition(SuperstructureConstants.kSlapdownUpSlappingAngleRadians),
+            Commands.waitSeconds(1.5)
+        );
     }
 
 }
