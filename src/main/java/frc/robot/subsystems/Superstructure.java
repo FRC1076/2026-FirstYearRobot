@@ -50,23 +50,19 @@ public class Superstructure {
 
     public Command shootPreset(int positionNumber) {
         if (positionNumber == 1) {
-            kickerVoltage = SuperstructureConstants.kInFrontOfBumpKickerVoltage;
-            return m_drum.setVelocity(SuperstructureConstants.kInFrontOfBumpDrumVelocity);
+            return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kInFrontOfBumpKickerVoltage).andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfBumpDrumVelocity));
         }
 
         else if (positionNumber == 2) {
-            kickerVoltage = SuperstructureConstants.kInFrontOfClimberKickerVoltage;
-            return m_drum.setVelocity(SuperstructureConstants.kInFrontOfClimberDrumVelocity);
+            return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kInFrontOfClimberKickerVoltage).andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfClimberDrumVelocity));
         }
 
         else if (positionNumber == 3) {
-            kickerVoltage = SuperstructureConstants.kCornerKickerVoltage;
-            return m_drum.setVelocity(SuperstructureConstants.kCornerDrumVelocity);
+            return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kCornerKickerVoltage).andThen(m_drum.setVelocity(SuperstructureConstants.kCornerDrumVelocity));
         }
 
         else if (positionNumber == 4) {
-            kickerVoltage = SuperstructureConstants.kPassingKickerVoltage;
-            return m_drum.setVelocity(SuperstructureConstants.kPassingDrumVelocity);
+            return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kPassingKickerVoltage).andThen(m_drum.setVelocity(SuperstructureConstants.kPassingDrumVelocity));
         }
 
         else {
