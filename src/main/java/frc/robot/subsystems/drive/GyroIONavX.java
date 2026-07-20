@@ -30,7 +30,7 @@ public class GyroIONavX implements GyroIO {
 
     public GyroIONavX() {
         yawTimestampQueue = OdometryThread.getInstance().makeTimestampQueue();
-        yawPositionQueue = OdometryThread.getInstance().registerSignal( () -> Math.toRadians(navX.getAngle()));
+        yawPositionQueue = OdometryThread.getInstance().registerSignal( () -> Math.toRadians(-navX.getAngle()));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class GyroIONavX implements GyroIO {
         OdometryThread.safeDrain(yawTimestampQueue, yawTimestampBuffer, samples);
         OdometryThread.safeDrain(yawPositionQueue, yawPositionBuffer, samples);
 
-        inputs.odometryYawPositions = yawPositionBuffer.stream().map((Double value) -> Rotation2d.fromDegrees(value)).toArray(Rotation2d[]::new);
+        inputs.odometryYawPositions = yawPositionBuffer.stream().map((Double value) -> Rotation2d.fromRadians(value)).toArray(Rotation2d[]::new);
         inputs.odometryYawTimestamps = yawTimestampBuffer.stream().mapToDouble((Long value) -> value/1e6).toArray();
 
         yawTimestampBuffer.clear();
