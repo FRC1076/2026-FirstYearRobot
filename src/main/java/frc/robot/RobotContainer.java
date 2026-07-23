@@ -111,7 +111,7 @@ public class RobotContainer {
         rollerSubsystem = new RollerSubsystem(new RollerIOSparkMax());
         slapdownSubsystem = new SlapdownSubsystem(new SlapdownIOSparkMax());
         drumSubsystem = new DrumSubsystem(new DrumIOSparkMax());
-        kickerSubsystem = new KickerSubsystem(new KickerIOTalonSRX());
+        kickerSubsystem = new KickerSubsystem(new KickerIOSparkMax());
 
         // Define locations of cameras relative to center (FIND)
         Transform3d leftCameraLocation = new Transform3d(new Translation3d(0.3, 0.0, 0.5), new Rotation3d());
@@ -192,11 +192,6 @@ public class RobotContainer {
 
         m_driverController.start().onTrue(Commands.runOnce(() -> driveSubsystem.rezeroGyro()));
 
-        
-        // subsystem testing controls (TEMP)
-
-        m_driverController.x().onTrue(slapdownSubsystem.applyPosition(Math.toRadians(270)));
-        m_driverController.y().onTrue(slapdownSubsystem.applyPosition(0));
     }
 
     /**
