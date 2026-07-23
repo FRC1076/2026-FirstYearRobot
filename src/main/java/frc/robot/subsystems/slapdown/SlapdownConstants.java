@@ -20,8 +20,8 @@ public class SlapdownConstants {
     public static final double kMaxAcceleration = 1000000; // TUNE
 
 
-    public static final double kMaxAngleRadians = Math.PI;
-    public static final double kMinAngleRadians = -1 * Math.PI;
+    public static final double kMaxAngleRadians = Math.PI*2;
+    public static final double kMinAngleRadians = 0;
     public static final double kAngleToleranceRadians = 0.05;
     public static final double kAllowedProfileError = 0.05; 
     public static final IdleMode kIdleModeSparkMax = IdleMode.kBrake;

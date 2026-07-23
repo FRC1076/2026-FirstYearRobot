@@ -154,7 +154,7 @@ public class RobotContainer {
         
         // subsystem testing controls (TEMP)
 
-        m_driverController.x().onTrue(slapdownSubsystem.applyPosition(Math.PI / 2));
+        m_driverController.x().onTrue(slapdownSubsystem.applyPosition(Math.toRadians(270)));
         m_driverController.y().onTrue(slapdownSubsystem.applyPosition(0));
     }
 
