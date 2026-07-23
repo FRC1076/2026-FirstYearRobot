@@ -30,7 +30,7 @@ public class GyroIONavX implements GyroIO {
 
     public GyroIONavX() {
         yawTimestampQueue = OdometryThread.getInstance().makeTimestampQueue();
-        yawPositionQueue = OdometryThread.getInstance().registerSignal(navX::getAngle);
+        yawPositionQueue = OdometryThread.getInstance().registerSignal( () -> Math.toRadians(-navX.getAngle()));
     }
 
     @Override

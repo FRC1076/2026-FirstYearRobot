@@ -15,9 +15,13 @@ import static frc.robot.subsystems.drive.DriveConstants.ModuleConstants.Common.D
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -31,9 +35,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.GameConstants;
 import frc.robot.commands.drive.TeleopDriveCommandV2;
+import lib.vision.CameraLocalizer;
+import lib.vision.PhotonVisionLocalizerWithTagPrioritization;
+import lib.vision.VisionLocalizationSystem;
+import frc.robot.PhysicalConstants;
+import frc.robot.PhysicalConstants.VisionConstants;
 
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.ModuleConfig;
@@ -60,6 +72,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     public final DriveCommandFactory CommandBuilder;
 
+    public final VisionLocalizationSystem visionSystem;
+
     /** Create a new DriveSubsystem using the specified IO layers.
      *  
      * @param FLModuleIO Module labeled front left, actually the rear right
@@ -72,7 +86,8 @@ public class DriveSubsystem extends SubsystemBase {
         ModuleIO FLModuleIO,
         ModuleIO FRModuleIO,
         ModuleIO RLModuleIO,
-        ModuleIO RRModuleIO
+        ModuleIO RRModuleIO,
+        VisionLocalizationSystem VisionSystem
     ){
         this.gyroIO = gyroIO;
         /* // If the elevator is by the modules labeled front
@@ -87,9 +102,15 @@ public class DriveSubsystem extends SubsystemBase {
         modules[1] = new Module(RLModuleIO,"RearLeft");
         modules[2] = new Module(FRModuleIO, "FronRight");
         modules[3] = new Module(FLModuleIO, "FrontLeft");
-        
 
         OdometryThread.getInstance().start();
+
+        visionSystem = VisionSystem;
+
+        // Connect vision system and pose estimator
+        visionSystem.registerMeasurementConsumer((pose, timestamp, stddevs) -> {
+            poseEstimator.addVisionMeasurement(pose, timestamp, stddevs);
+        });
 
         CommandBuilder = new DriveCommandFactory(this);
 
@@ -205,6 +226,9 @@ public class DriveSubsystem extends SubsystemBase {
         for (Module module : modules) {
             module.periodic();
         }
+
+        // Update vision system
+        visionSystem.updateAll();
 
         // Update odometry
         double[] sampleTimestamps = modules[0].getOdometryTimestamps();

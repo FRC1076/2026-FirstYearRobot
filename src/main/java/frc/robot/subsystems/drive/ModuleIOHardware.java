@@ -78,7 +78,7 @@ public class ModuleIOHardware implements ModuleIO {
         encoderConfig.MagnetSensor.MagnetOffset = config.EncoderOffsetRots;
         m_turnEncoder.getConfigurator().apply(encoderConfig);
         turnAbsolutePosition = m_turnEncoder.getAbsolutePosition();
-        turnAbsolutePosition.refresh();
+        turnAbsolutePosition.waitForUpdate(1.0);
 
         SparkMaxConfig turnConfig = new SparkMaxConfig();
         turnConfig

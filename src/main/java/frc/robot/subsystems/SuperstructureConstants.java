@@ -4,7 +4,7 @@ import frc.robot.subsystems.slapdown.SlapdownConstants;
 
 public class SuperstructureConstants {
 
-    public static final double kSlapdownDownSlappingAngleRadians = (3 * Math.PI / 4) * SlapdownConstants.kMotorToRotationsRatio;
+    public static final double kSlapdownDownSlappingAngleRadians = Math.PI / 2;
     public static final double kSlapdownUpSlappingAngleRadians = 0.0;
 
     // Drum velocities for shooting (untuned)

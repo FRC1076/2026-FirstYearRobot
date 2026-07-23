@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SystemConstants;
+import frc.robot.PhysicalConstants.VisionConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.climber.ClimbDown;
@@ -34,18 +35,28 @@ import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIONavX;
 import frc.robot.subsystems.drive.ModuleIO;
 import frc.robot.subsystems.drive.ModuleIOHardware;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import lib.vision.PhotonVisionLocalizerWithTagPrioritization;
+import lib.vision.CameraLocalizer;
+import lib.vision.VisionLocalizationSystem;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.robot.Constants.OperatorConstants.*;
+
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -69,6 +80,8 @@ public class RobotContainer {
 
     private final KickerSubsystem kickerSubsystem;
 
+    private final VisionLocalizationSystem visionSystem;
+
     private final Superstructure superstructure;
 
     private final TeleopDriveCommandV2 teleopDriveCommand;
@@ -86,26 +99,54 @@ public class RobotContainer {
     * The container for the robot. Contains subsystems, OI devices, and commands.
     */
     public RobotContainer() {
+        visionSystem = new VisionLocalizationSystem();
         driveSubsystem = new DriveSubsystem(
             new GyroIONavX(),
             new ModuleIOHardware(ModuleConfig.FrontLeft),
             new ModuleIOHardware(ModuleConfig.FrontRight),
             new ModuleIOHardware(ModuleConfig.RearLeft),
-            new ModuleIOHardware(ModuleConfig.RearRight)
+            new ModuleIOHardware(ModuleConfig.RearRight),
+            visionSystem
         );
         rollerSubsystem = new RollerSubsystem(new RollerIOSparkMax());
         slapdownSubsystem = new SlapdownSubsystem(new SlapdownIOSparkMax());
         drumSubsystem = new DrumSubsystem(new DrumIOSparkMax());
         kickerSubsystem = new KickerSubsystem(new KickerIOTalonSRX());
 
-        //fuelSubsystem = new FuelSubsystem();
-        //climberSubsystem = new ClimberSubsystem();
+        // Define locations of cameras relative to center (FIND)
+        Transform3d leftCameraLocation = new Transform3d(new Translation3d(0.3, 0.0, 0.5), new Rotation3d());
+        Transform3d rightCameraLocation = new Transform3d(new Translation3d(-0.3, 0.0, 0.5), new Rotation3d(0, 0, Math.PI));
+        
+        // Create the camera objects
+        CameraLocalizer backLeftCamera = new PhotonVisionLocalizerWithTagPrioritization(
+            new PhotonCamera("LeftCam"), 
+            leftCameraLocation,
+            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+            PoseStrategy.PNP_DISTANCE_TRIG_SOLVE,
+            () -> driveSubsystem.getPose().getRotation(),
+            PhysicalConstants.VisionConstants.kAprilTagFieldLayout,
+            (VecBuilder.fill(1.5, 1.5, 1.5)).times(PhysicalConstants.VisionConstants.PhotonVision.kHubTagPriority),
+            VecBuilder.fill(0.75, 0.75, 0.75).times(PhysicalConstants.VisionConstants.PhotonVision.kHubTagPriority),
+            VisionConstants.kHubTags,
+            (1.0 / PhysicalConstants.VisionConstants.PhotonVision.kHubTagPriority)
+        );
 
-        // Set the options to show up in the Dashboard for selecting auto modes. If you
-        // add additional auto modes you can add additional lines here with
-        // autoChooser.addOption
+        CameraLocalizer frontRightCamera = new PhotonVisionLocalizerWithTagPrioritization(
+            new PhotonCamera("RightCam"),
+            rightCameraLocation,
+            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+            PoseStrategy.PNP_DISTANCE_TRIG_SOLVE,
+            () -> driveSubsystem.getPose().getRotation(),
+            PhysicalConstants.VisionConstants.kAprilTagFieldLayout,
+            (VecBuilder.fill(1.5, 1.5, 1.5)).times(PhysicalConstants.VisionConstants.PhotonVision.kHubTagPriority),
+            (VecBuilder.fill(0.75, 0.75, 0.75)).times(PhysicalConstants.VisionConstants.PhotonVision.kHubTagPriority),
+            VisionConstants.kHubTags,
+            (1.0 / PhysicalConstants.VisionConstants.PhotonVision.kHubTagPriority)
+        );
 
-        // autoChooser.setDefaultOption("Autonomous", new Auto(driveSubsystem, fuelSubsystem)); <-- may add back in later
+        // Add the cameras to the vision system
+        visionSystem.addCamera(backLeftCamera);
+        visionSystem.addCamera(frontRightCamera);    
 
         teleopDriveCommand = driveSubsystem.CommandBuilder.driveTeleop(
             () -> -m_driverController.getLeftY(), 
