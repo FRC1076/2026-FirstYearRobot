@@ -16,15 +16,15 @@ public class DriveConstants {
     public static final double doubleClutchRotationFactor = 0.35;
 
     public static final int odometryFrequencyHz = 50;
-    public static final double wheelBase = Units.inchesToMeters(27.5);
-    public static final double trackWidth = Units.inchesToMeters(27.5);
+    public static final double wheelBase = Units.inchesToMeters(30);
+    public static final double trackWidth = Units.inchesToMeters(25);
     //public static final double wheelRadius = 0.0508; //Meters
 
     public static final Translation2d[] moduleTranslations = new Translation2d[] {
-        new Translation2d(trackWidth / 2.0, wheelBase / 2.0),
-        new Translation2d(trackWidth / 2.0, -wheelBase / 2.0),
-        new Translation2d(-trackWidth / 2.0, wheelBase / 2.0),
-        new Translation2d(-trackWidth / 2.0, -wheelBase / 2.0)
+        new Translation2d(9.711, 10.25), // front left
+        new Translation2d(9.711, -10.25), // rear left
+        new Translation2d(-8.2, 11.25), // rear right
+        new Translation2d(-8.2, -11.25) // front right
     };
 
     // public static final InterpolatingDoubleTreeMap elevatorAccelerationTable = new InterpolatingDoubleTreeMap(); // A table that maps elevator heights to slew rate limits

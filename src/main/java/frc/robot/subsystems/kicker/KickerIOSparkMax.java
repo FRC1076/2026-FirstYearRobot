@@ -29,20 +29,20 @@ public class KickerIOSparkMax implements KickerIO {
             .idleMode(KickerConstants.kIdleModeSparkMax)
             .smartCurrentLimit(KickerConstants.kCurrentLimit);
 
-        // m_config.encoder
-        //     .positionConversionFactor(KickerConstants.kPositionFactor)
-        //     .velocityConversionFactor(KickerConstants.kVelocityFactor);
+        m_config.encoder
+            .positionConversionFactor(KickerConstants.kPositionFactor)
+            .velocityConversionFactor(KickerConstants.kVelocityFactor);
 
-        // m_config.closedLoop
-        //     .p(KickerConstants.kP)
-        //     .i(KickerConstants.kI)
-        //     .d(KickerConstants.kD)
-        //     .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+        m_config.closedLoop
+            .p(KickerConstants.kP)
+            .i(KickerConstants.kI)
+            .d(KickerConstants.kD)
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
         
-        // m_config.closedLoop.feedForward
-        //     .kS(KickerConstants.kS)
-        //     .kV(KickerConstants.kV)
-        //     .kA(KickerConstants.kA);
+        m_config.closedLoop.feedForward
+            .kS(KickerConstants.kS)
+            .kV(KickerConstants.kV)
+            .kA(KickerConstants.kA);
 
         m_config.closedLoop.maxMotion
             .maxAcceleration(KickerConstants.kMaxAcceleration)
