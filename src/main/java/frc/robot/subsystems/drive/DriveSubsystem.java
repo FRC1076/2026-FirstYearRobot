@@ -72,7 +72,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public final DriveCommandFactory CommandBuilder;
 
-    public final VisionLocalizationSystem visionSystem;
+    // public final VisionLocalizationSystem visionSystem;
 
     /** Create a new DriveSubsystem using the specified IO layers.
      *  
@@ -105,12 +105,12 @@ public class DriveSubsystem extends SubsystemBase {
 
         OdometryThread.getInstance().start();
 
-        visionSystem = VisionSystem;
+        // visionSystem = VisionSystem;
 
         // Connect vision system and pose estimator
-        visionSystem.registerMeasurementConsumer((pose, timestamp, stddevs) -> {
+        /*visionSystem.registerMeasurementConsumer((pose, timestamp, stddevs) -> {
             poseEstimator.addVisionMeasurement(pose, timestamp, stddevs);
-        });
+        }); */
 
         CommandBuilder = new DriveCommandFactory(this);
 
@@ -228,7 +228,7 @@ public class DriveSubsystem extends SubsystemBase {
         }
 
         // Update vision system
-        visionSystem.updateAll();
+        // visionSystem.updateAll();
 
         // Update odometry
         double[] sampleTimestamps = modules[0].getOdometryTimestamps();
