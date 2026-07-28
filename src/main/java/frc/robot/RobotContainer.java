@@ -41,6 +41,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -48,6 +49,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import lib.vision.PhotonVisionLocalizerWithTagPrioritization;
 import lib.vision.CameraLocalizer;
 import lib.vision.VisionLocalizationSystem;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -57,6 +61,8 @@ import static frc.robot.Constants.OperatorConstants.*;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
+import com.pathplanner.lib.auto.NamedCommands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -93,7 +99,7 @@ public class RobotContainer {
     private final SamuraiXboxController operatorController = new SamuraiXboxController(OperatorConstants.kOperatorControllerPort);
 
     // The autonomous chooser
-    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+    private final SendableChooser<String> autoChooser = new SendableChooser<>();
 
     /**
     * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -112,6 +118,8 @@ public class RobotContainer {
         slapdownSubsystem = new SlapdownSubsystem(new SlapdownIOSparkMax());
         drumSubsystem = new DrumSubsystem(new DrumIOSparkMax());
         kickerSubsystem = new KickerSubsystem(new KickerIOSparkMax());
+
+
 
         // Define locations of cameras relative to center (FIND)
         Transform3d leftCameraLocation = new Transform3d(new Translation3d(0.3, 0.0, 0.5), new Rotation3d());
@@ -158,6 +166,31 @@ public class RobotContainer {
         );
 
         superstructure = new Superstructure(driveSubsystem, drumSubsystem, kickerSubsystem, rollerSubsystem, slapdownSubsystem);
+
+        Shuffleboard.getTab("Autonomous")
+            .add("Auto Selector", autoChooser)
+            .withWidget(BuiltInWidgets.kComboBoxChooser)
+            .withPosition(0,0)
+            .withSize(2,1);
+
+        Shuffleboard.getTab("Autonomous")
+            .add("On Red Side?", true)
+            .withWidget(BuiltInWidgets.kBooleanBox)
+            .getEntry();
+
+        autoChooser.setDefaultOption("Middle to Depot to Shoot", "Middle to Depot to Shoot");
+        autoChooser.addOption("Left Bump to Depot to Shoot", "Left Bump to Depot to Shoot");
+        autoChooser.addOption("Left Trench to Depot to Shoot", "Left Trench to Depot to Shoot");
+        autoChooser.addOption("Right Trench to Depot to Shoot", "Right Trench to Depot to Shoot");
+        autoChooser.addOption("Right Bump to Depot to Shoot", "Right Bump to Depot to Shoot");
+
+        autoChooser.addOption("Move Forward", "Move Forward");
+
+        SmartDashboard.putData("Auto choices", autoChooser);
+
+        NamedCommands.registerCommand("shootPreset2", superstructure.shootPreset(2));
+        NamedCommands.registerCommand("intake", superstructure.intake(8.0));
+        NamedCommands.registerCommand("shoot", superstructure.shoot());
 
         configureBindings();
     }
