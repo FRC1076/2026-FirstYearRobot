@@ -15,6 +15,7 @@ import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.commands.drive.TeleopDriveCommandV2;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.SuperstructureConstants;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.climber.*;
 import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.Common.Drive;
@@ -220,7 +221,7 @@ public class RobotContainer {
         m_driverController.a().whileTrue(superstructure.agitateHopper());
         m_driverController.b().onTrue(superstructure.intakeUp());
 
-        m_driverController.leftTrigger().whileTrue(superstructure.intake(8.0)).onFalse(superstructure.intake(0));
+        m_driverController.leftTrigger().whileTrue(superstructure.intake(SuperstructureConstants.kIntakeRollerVoltage)).onFalse(superstructure.intake(0));
         m_driverController.rightTrigger().whileTrue(superstructure.shoot());
 
         m_driverController.start().onTrue(Commands.runOnce(() -> driveSubsystem.rezeroGyro()));
