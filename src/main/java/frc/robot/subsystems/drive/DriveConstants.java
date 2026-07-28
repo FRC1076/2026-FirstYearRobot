@@ -91,7 +91,7 @@ public class DriveConstants {
             }
         }
         public static enum ModuleConfig {
-            FrontLeft(3,4,21,-0.02587890625),
+            FrontLeft(4,3,21,-0.02587890625),
             FrontRight(1,2,22,-0.426513671875),
             RearRight(5,6,23,0.0712890625),
             RearLeft(7,8,24,0.092529296875);
