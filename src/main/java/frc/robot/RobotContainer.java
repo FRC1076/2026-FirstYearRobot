@@ -88,7 +88,7 @@ public class RobotContainer {
 
     private final KickerSubsystem kickerSubsystem;
 
-    private final VisionLocalizationSystem visionSystem;
+    // private final VisionLocalizationSystem visionSystem;
 
     private final Superstructure superstructure;
 
@@ -107,14 +107,14 @@ public class RobotContainer {
     * The container for the robot. Contains subsystems, OI devices, and commands.
     */
     public RobotContainer() {
-        visionSystem = new VisionLocalizationSystem();
+        // visionSystem = new VisionLocalizationSystem();
         driveSubsystem = new DriveSubsystem(
             new GyroIONavX(),
             new ModuleIOHardware(ModuleConfig.FrontLeft),
             new ModuleIOHardware(ModuleConfig.FrontRight),
             new ModuleIOHardware(ModuleConfig.RearLeft),
             new ModuleIOHardware(ModuleConfig.RearRight),
-            visionSystem
+            // visionSystem
         );
         rollerSubsystem = new RollerSubsystem(new RollerIOSparkMax());
         slapdownSubsystem = new SlapdownSubsystem(new SlapdownIOSparkMax());
@@ -124,11 +124,11 @@ public class RobotContainer {
 
 
         // Define locations of cameras relative to center (FIND)
-        Transform3d leftCameraLocation = new Transform3d(new Translation3d(0.3, 0.0, 0.5), new Rotation3d());
-        Transform3d rightCameraLocation = new Transform3d(new Translation3d(-0.3, 0.0, 0.5), new Rotation3d(0, 0, Math.PI));
+        // Transform3d leftCameraLocation = new Transform3d(new Translation3d(0.3, 0.0, 0.5), new Rotation3d());
+        // Transform3d rightCameraLocation = new Transform3d(new Translation3d(-0.3, 0.0, 0.5), new Rotation3d(0, 0, Math.PI));
         
         // Create the camera objects
-        CameraLocalizer backLeftCamera = new PhotonVisionLocalizerWithTagPrioritization(
+        /* CameraLocalizer backLeftCamera = new PhotonVisionLocalizerWithTagPrioritization(
             new PhotonCamera("LeftCam"), 
             leftCameraLocation,
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
@@ -139,9 +139,9 @@ public class RobotContainer {
             VecBuilder.fill(0.75, 0.75, 0.75).times(PhysicalConstants.VisionConstants.PhotonVision.kHubTagPriority),
             VisionConstants.kHubTags,
             (1.0 / PhysicalConstants.VisionConstants.PhotonVision.kHubTagPriority)
-        );
+        ); */
 
-        CameraLocalizer frontRightCamera = new PhotonVisionLocalizerWithTagPrioritization(
+        /*CameraLocalizer frontRightCamera = new PhotonVisionLocalizerWithTagPrioritization(
             new PhotonCamera("RightCam"),
             rightCameraLocation,
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
@@ -152,11 +152,11 @@ public class RobotContainer {
             (VecBuilder.fill(0.75, 0.75, 0.75)).times(PhysicalConstants.VisionConstants.PhotonVision.kHubTagPriority),
             VisionConstants.kHubTags,
             (1.0 / PhysicalConstants.VisionConstants.PhotonVision.kHubTagPriority)
-        );
+        ); */
 
         // Add the cameras to the vision system
-        visionSystem.addCamera(backLeftCamera);
-        visionSystem.addCamera(frontRightCamera);    
+        // visionSystem.addCamera(backLeftCamera);
+        // visionSystem.addCamera(frontRightCamera);    
 
         teleopDriveCommand = driveSubsystem.CommandBuilder.driveTeleop(
             () -> -m_driverController.getLeftY(), 
