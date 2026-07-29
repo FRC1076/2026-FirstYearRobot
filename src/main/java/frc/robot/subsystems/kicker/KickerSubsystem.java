@@ -34,7 +34,7 @@ public class KickerSubsystem extends SubsystemBase {
 
     /** Run the Kicker motors at supplied voltages */
     public Command runVoltage(DoubleSupplier volts) {
-        return Commands.run (() -> io.setVoltage(volts.getAsDouble()), this);
+        return Commands.runEnd (() -> io.setVoltage(volts.getAsDouble()), () -> io.stop());
     }
 
     // public Command setVelocity(double radPerSec) {
@@ -44,6 +44,10 @@ public class KickerSubsystem extends SubsystemBase {
     /** Stop the Kicker's motors */
     public Command stop() {
         return setVoltage(0);
+    }
+
+    public Command stopOnce() {
+        return runOnce(() -> io.setVoltage(0));
     }
 
     /** Gets the Kicker motors voltage */

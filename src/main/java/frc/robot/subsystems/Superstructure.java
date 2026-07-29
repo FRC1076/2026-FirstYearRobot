@@ -22,7 +22,7 @@ public class Superstructure {
     // private final BeltSubsystem m_belts;
     // private final ClimberSubsystem m_climber;
 
-    private double kickerVoltage = 10.0;
+    private double kickerVoltage = 4.0;
 
     public Superstructure(DriveSubsystem drive, DrumSubsystem drum, KickerSubsystem kicker, RollerSubsystem roller, SlapdownSubsystem slapdown) {
         this.m_drive = drive;
@@ -44,25 +44,33 @@ public class Superstructure {
         }
     }
 
+    public Command intakeForAuto(double volts, double seconds) {
+        return Commands.parallel(
+            m_roller.runVoltage(volts),
+            m_slapdown.applyPosition(SuperstructureConstants.kSlapdownDownSlappingAngleRadians))
+        .withTimeout(seconds)
+        .andThen(m_roller.stop());
+    }
+
     public Command intakeUp() {
         return m_slapdown.applyPosition(SuperstructureConstants.kSlapdownUpSlappingAngleRadians);
     }
 
     public Command shootPreset(int positionNumber) {
         if (positionNumber == 1) {
-            return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kInFrontOfBumpKickerVoltage).andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfBumpDrumVelocity));
+            return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kInFrontOfClimberKickerVoltage).andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfClimberDrumVelocity1));
         }
 
         else if (positionNumber == 2) {
-            return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kInFrontOfClimberKickerVoltage).andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfClimberDrumVelocity));
+            return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kInFrontOfClimberKickerVoltage).andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfClimberDrumVelocity2));
         }
 
         else if (positionNumber == 3) {
-            return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kCornerKickerVoltage).andThen(m_drum.setVelocity(SuperstructureConstants.kCornerDrumVelocity));
+            return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kInFrontOfClimberKickerVoltage).andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfClimberDrumVelocity3));
         }
 
         else if (positionNumber == 4) {
-            return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kPassingKickerVoltage).andThen(m_drum.setVelocity(SuperstructureConstants.kPassingDrumVelocity));
+            return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kInFrontOfClimberKickerVoltage).andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfClimberDrumVelocity4));
         }
 
         else {
@@ -75,6 +83,17 @@ public class Superstructure {
 
     public Command shoot() {
         return m_kicker.runVoltage(() -> kickerVoltage);
+    }
+
+    public Command shootForAuto (int positionNumber, double spinUpSeconds, double shootSeconds) {
+        return Commands.deadline( 
+            Commands.sequence(
+                Commands.waitSeconds(spinUpSeconds),
+                m_kicker.runVoltage(() -> kickerVoltage).withTimeout(shootSeconds)
+            ),
+            shootPreset(positionNumber)
+            )
+            .andThen(m_kicker.stopOnce());
     }
 
     public Command agitateHopper() {

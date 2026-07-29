@@ -64,6 +64,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -189,9 +190,8 @@ public class RobotContainer {
 
         SmartDashboard.putData("Auto choices", autoChooser);
 
-        NamedCommands.registerCommand("shootPreset2", superstructure.shootPreset(2));
-        NamedCommands.registerCommand("intake", superstructure.intake(8.0));
-        NamedCommands.registerCommand("shoot", superstructure.shoot());
+        NamedCommands.registerCommand("intake", superstructure.intakeForAuto(SuperstructureConstants.kIntakeRollerVoltage1, 3.0));
+        NamedCommands.registerCommand("shoot", superstructure.shootForAuto(2, 1.0, 2.0 ));
 
         configureBindings();
     }
@@ -221,7 +221,7 @@ public class RobotContainer {
         m_driverController.a().whileTrue(superstructure.agitateHopper());
         m_driverController.b().onTrue(superstructure.intakeUp());
 
-        m_driverController.leftTrigger().whileTrue(superstructure.intake(SuperstructureConstants.kIntakeRollerVoltage)).onFalse(superstructure.intake(0));
+        m_driverController.leftTrigger().whileTrue(superstructure.intake(SuperstructureConstants.kIntakeRollerVoltage1)).onFalse(superstructure.intake(0));
         m_driverController.rightTrigger().whileTrue(superstructure.shoot());
 
         m_driverController.start().onTrue(Commands.runOnce(() -> driveSubsystem.rezeroGyro()));
@@ -234,7 +234,10 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        // An example command will be run in autonomous
-        return Autos.exampleAuto(m_exampleSubsystem);
+        String selected = autoChooser.getSelected();
+        if (selected == null) {
+            return Commands.none();
+        }
+        return new PathPlannerAuto(selected);
     }
 }
