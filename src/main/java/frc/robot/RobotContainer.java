@@ -113,7 +113,7 @@ public class RobotContainer {
             new ModuleIOHardware(ModuleConfig.FrontLeft),
             new ModuleIOHardware(ModuleConfig.FrontRight),
             new ModuleIOHardware(ModuleConfig.RearLeft),
-            new ModuleIOHardware(ModuleConfig.RearRight),
+            new ModuleIOHardware(ModuleConfig.RearRight)
             // visionSystem
         );
         rollerSubsystem = new RollerSubsystem(new RollerIOSparkMax());

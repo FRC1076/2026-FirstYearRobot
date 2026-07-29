@@ -86,8 +86,8 @@ public class DriveSubsystem extends SubsystemBase {
         ModuleIO FLModuleIO,
         ModuleIO FRModuleIO,
         ModuleIO RLModuleIO,
-        ModuleIO RRModuleIO,
-        VisionLocalizationSystem VisionSystem
+        ModuleIO RRModuleIO
+        // VisionLocalizationSystem VisionSystem
     ){
         this.gyroIO = gyroIO;
         /* // If the elevator is by the modules labeled front
