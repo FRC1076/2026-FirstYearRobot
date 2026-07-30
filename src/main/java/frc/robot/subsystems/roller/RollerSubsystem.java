@@ -43,7 +43,8 @@ public class RollerSubsystem extends SubsystemBase {
     public Command runVoltage(double volts) {
         return Commands.runEnd(
             () -> io.setVoltage(volts),
-            () -> io.setVoltage(0)
+            () -> io.setVoltage(0),
+            this
         );
     }
 

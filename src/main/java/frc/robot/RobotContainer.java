@@ -184,7 +184,7 @@ public class RobotContainer {
         
         m_driverController.y().onTrue(superstructure.stopShooting());
 
-        m_driverController.leftTrigger().whileTrue(superstructure.intake(SuperstructureConstants.kIntakeRollerVoltage1)).onFalse(superstructure.stopintake());
+        m_driverController.leftTrigger().whileTrue(superstructure.intake(SuperstructureConstants.kIntakeRollerVoltage1)).onFalse(superstructure.stopIntake());
         m_driverController.rightTrigger().whileTrue(superstructure.shoot());
 
         m_driverController.start().onTrue(Commands.runOnce(() -> driveSubsystem.rezeroGyro()));
