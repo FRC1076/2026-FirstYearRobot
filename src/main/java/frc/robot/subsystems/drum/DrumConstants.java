@@ -13,10 +13,11 @@ public class DrumConstants {
     public static final boolean kFollowMotorInverted = false; // switch?
 
     // Gear ratio
-    public static final double kMotorToRotationsRatio = 1.0; // FIND
+    public static final double kMotorToRotationsRatio = 1.0; 
 
     public static final double kPositionFactor = 2 * Math.PI / kMotorToRotationsRatio;
     public static final double kVelocityFactor = kPositionFactor / 60;
+    public static final double kVelocityToleranceRadPerSec = 10;
     public static final double kMaxAcceleration = 1000000; // FIND
     public static final double kAllowedProfileError = 0.05;
     public static final IdleMode kIdleModeSparkMax = IdleMode.kBrake;

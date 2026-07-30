@@ -4,67 +4,37 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.Constants.SystemConstants;
-import frc.robot.PhysicalConstants.VisionConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.climber.ClimbDown;
-import frc.robot.commands.climber.ClimbUp;
-import frc.robot.commands.drive.TeleopDriveCommand;
-import frc.robot.commands.drive.TeleopDriveCommandV2;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Superstructure;
-import frc.robot.subsystems.SuperstructureConstants;
-import frc.robot.subsystems.climber.ClimberSubsystem;
-import frc.robot.subsystems.climber.*;
-import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.Common.Drive;
-import frc.robot.subsystems.drum.DrumIOSparkMax;
-import frc.robot.subsystems.drum.DrumSubsystem;
-import frc.robot.subsystems.kicker.KickerIOSparkMax;
-import frc.robot.subsystems.kicker.KickerIOTalonSRX;
-import frc.robot.subsystems.kicker.KickerSubsystem;
-import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.ModuleConfig;
-import frc.robot.subsystems.drive.DriveSubsystem;
-import frc.robot.subsystems.roller.RollerSubsystem;
-import frc.robot.subsystems.roller.RollerIOSparkMax;
-import frc.robot.subsystems.slapdown.SlapdownSubsystem;
-import lib.hardware.hid.SamuraiXboxController;
-import frc.robot.subsystems.slapdown.SlapdownConstants;
-import frc.robot.subsystems.slapdown.SlapdownIOSparkMax;
-import frc.robot.subsystems.drive.GyroIO;
-import frc.robot.subsystems.drive.GyroIONavX;
-import frc.robot.subsystems.drive.ModuleIO;
-import frc.robot.subsystems.drive.ModuleIOHardware;
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.wpilibj.RobotBase;
+import java.util.Set;
+
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import lib.vision.PhotonVisionLocalizerWithTagPrioritization;
-import lib.vision.CameraLocalizer;
-import lib.vision.VisionLocalizationSystem;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import static frc.robot.Constants.OperatorConstants.*;
-
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.drive.TeleopDriveCommandV2;
+import frc.robot.subsystems.Superstructure;
+import frc.robot.subsystems.SuperstructureConstants;
+import frc.robot.subsystems.drive.DriveConstants;
+import frc.robot.subsystems.drive.DriveConstants.ModuleConstants.ModuleConfig;
+import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.drive.GyroIONavX;
+import frc.robot.subsystems.drive.ModuleIOHardware;
+import frc.robot.subsystems.drum.DrumIOSparkMax;
+import frc.robot.subsystems.drum.DrumSubsystem;
+import frc.robot.subsystems.kicker.KickerIOSparkMax;
+import frc.robot.subsystems.kicker.KickerSubsystem;
+import frc.robot.subsystems.roller.RollerIOSparkMax;
+import frc.robot.subsystems.roller.RollerSubsystem;
+import frc.robot.subsystems.slapdown.SlapdownIOSparkMax;
+import frc.robot.subsystems.slapdown.SlapdownSubsystem;
+import lib.hardware.hid.SamuraiXboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -74,7 +44,6 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
-    private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
     private final DriveSubsystem driveSubsystem;
     //private final FuelSubsystem fuelSubsystem;
@@ -164,7 +133,7 @@ public class RobotContainer {
             () -> -m_driverController.getRightX(),
             1,
             1, 
-            false
+            DriveConstants.useSpeedScaling
         );
 
         superstructure = new Superstructure(driveSubsystem, drumSubsystem, kickerSubsystem, rollerSubsystem, slapdownSubsystem);
@@ -175,23 +144,18 @@ public class RobotContainer {
             .withPosition(0,0)
             .withSize(2,1);
 
-        Shuffleboard.getTab("Autonomous")
-            .add("On Red Side?", true)
-            .withWidget(BuiltInWidgets.kBooleanBox)
-            .getEntry();
-
         autoChooser.setDefaultOption("Middle to Depot to Shoot", "Middle to Depot to Shoot");
         autoChooser.addOption("Left Bump to Depot to Shoot", "Left Bump to Depot to Shoot");
         autoChooser.addOption("Left Trench to Depot to Shoot", "Left Trench to Depot to Shoot");
         autoChooser.addOption("Right Trench to Depot to Shoot", "Right Trench to Depot to Shoot");
         autoChooser.addOption("Right Bump to Depot to Shoot", "Right Bump to Depot to Shoot");
 
-        autoChooser.addOption("Move Forward", "Move Forward");
+        autoChooser.addOption("Move Backward to Shoot", "Move Backward to Shoot");
 
         SmartDashboard.putData("Auto choices", autoChooser);
 
-        NamedCommands.registerCommand("intake", superstructure.intakeForAuto(SuperstructureConstants.kIntakeRollerVoltage1, 3.0));
-        NamedCommands.registerCommand("shoot", superstructure.shootForAuto(2, 1.0, 2.0 ));
+        NamedCommands.registerCommand("intake", Commands.defer(() -> superstructure.intakeForAuto(SuperstructureConstants.kIntakeRollerVoltage1), Set.of(rollerSubsystem, slapdownSubsystem)));
+        NamedCommands.registerCommand("shoot", Commands.defer(() -> superstructure.shootForAuto(), Set.of(kickerSubsystem, drumSubsystem)));
 
         configureBindings();
     }
@@ -213,15 +177,15 @@ public class RobotContainer {
 
         // driver controls 
 
-        m_driverController.povUp().toggleOnTrue(superstructure.shootPreset(1));
-        m_driverController.povLeft().toggleOnTrue(superstructure.shootPreset(2));
-        m_driverController.povDown().toggleOnTrue(superstructure.shootPreset(3));
-        m_driverController.povRight().toggleOnTrue(superstructure.shootPreset(4));
+        m_driverController.povUp().onTrue(superstructure.shootPreset(1));
+        m_driverController.povRight().onTrue(superstructure.shootPreset(2));
+        m_driverController.povDown().onTrue(superstructure.shootPreset(3));
+        m_driverController.povLeft().onTrue(superstructure.shootPreset(4));
         
         m_driverController.a().whileTrue(superstructure.agitateHopper());
-        m_driverController.b().onTrue(superstructure.intakeUp());
+        m_driverController.y().onTrue(superstructure.stopShooting());
 
-        m_driverController.leftTrigger().whileTrue(superstructure.intake(SuperstructureConstants.kIntakeRollerVoltage1)).onFalse(superstructure.intake(0));
+        m_driverController.leftTrigger().whileTrue(superstructure.intake(SuperstructureConstants.kIntakeRollerVoltage1)).onFalse(superstructure.stopintake());
         m_driverController.rightTrigger().whileTrue(superstructure.shoot());
 
         m_driverController.start().onTrue(Commands.runOnce(() -> driveSubsystem.rezeroGyro()));

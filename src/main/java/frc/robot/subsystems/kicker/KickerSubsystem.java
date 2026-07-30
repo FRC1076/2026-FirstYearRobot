@@ -29,12 +29,12 @@ public class KickerSubsystem extends SubsystemBase {
 
     /** Run at volts while scheduled, stop when the command ends */
     public Command setVoltage(double volts) {
-        return startEnd(() -> io.setVoltage(volts), () -> io.setVoltage(0));
+        return runEnd(() -> io.setVoltage(volts), () -> io.stop());
     }
 
     /** Run the Kicker motors at supplied voltages */
     public Command runVoltage(DoubleSupplier volts) {
-        return Commands.runEnd (() -> io.setVoltage(volts.getAsDouble()), () -> io.stop());
+        return Commands.runEnd (() -> io.setVoltage(volts.getAsDouble()), () -> io.setVoltage(0));
     }
 
     // public Command setVelocity(double radPerSec) {
@@ -43,10 +43,6 @@ public class KickerSubsystem extends SubsystemBase {
 
     /** Stop the Kicker's motors */
     public Command stop() {
-        return setVoltage(0);
-    }
-
-    public Command stopOnce() {
         return runOnce(() -> io.setVoltage(0));
     }
 

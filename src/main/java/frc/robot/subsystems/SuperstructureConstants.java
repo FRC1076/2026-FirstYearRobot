@@ -1,10 +1,8 @@
 package frc.robot.subsystems;
 
-import frc.robot.subsystems.slapdown.SlapdownConstants;
-
 public class SuperstructureConstants {
 
-    public static final double kSlapdownDownSlappingAngleRadians = 3 * Math.PI / 2;
+    public static final double kSlapdownDownSlappingAngleRadians = 3 * Math.PI / 2; // needs tuning
     public static final double kSlapdownUpSlappingAngleRadians = 0.0;
 
     // Intake roller voltages for intaking (TO BE TUNED)
@@ -43,5 +41,12 @@ public class SuperstructureConstants {
     public static final double kPassingKickerVoltage1 = 8.0;
     public static final double kPassingKickerVoltage2 = 10.0;
     public static final double kPassingKickerVoltage3 = 12.0;
+
+    // Autonomous constants
+    public static final double kIntakeForAutoSeconds = 3.0;
+
+    public static final int kPositionNumberForAuto = 2; // climber
+    public static final double kSpinUpSecondsForAuto = 2.0;
+    public static final double kShootSecondsForAuto = 7.0;
 
 }
