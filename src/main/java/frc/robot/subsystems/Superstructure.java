@@ -23,7 +23,7 @@ public class Superstructure {
     // private final ClimberSubsystem m_climber;
 
     private double kickerVoltage = 0.0;
-    private double targetDrumVelocity = 0;
+    private double targetDrumVelocity = 0.0;
 
     public Superstructure(DriveSubsystem drive, DrumSubsystem drum, KickerSubsystem kicker, RollerSubsystem roller, SlapdownSubsystem slapdown) {
         this.m_drive = drive;
@@ -48,7 +48,11 @@ public class Superstructure {
     public Command stopIntake () {
         return Commands.parallel(
             m_roller.stop(),
-            m_slapdown.applyPosition(SuperstructureConstants.kSlapdownUpSlappingAngleRadians)
+            m_slapdown.applyPosition(SuperstructureConstants.kSlapdownUpSlappingAngleRadians),
+            Commands.runOnce (() -> {
+            kickerVoltage = 0.0;
+            targetDrumVelocity = 0.0;
+            })
         );
     }
 
