@@ -60,6 +60,10 @@ public class Superstructure {
         .andThen(m_roller.stop());
     }
 
+    public Command intakeBackwards() {
+        return m_roller.runVoltage(SuperstructureConstants.kBackwardsOperatorRollerVoltage);
+    }
+
     public Command shootPreset(int positionNumber) {
         if (positionNumber == 1) {
             return Commands.runOnce(() -> kickerVoltage = SuperstructureConstants.kInFrontOfClimberKickerVoltage)
@@ -100,6 +104,13 @@ public class Superstructure {
     public Command shoot() {
         return Commands.waitUntil(() -> m_drum.atVelocity(targetDrumVelocity))
         .andThen(m_kicker.runVoltage(() -> kickerVoltage));
+    }
+
+    public Command shootBackwards() {
+        return Commands.parallel(
+            m_drum.setVelocity(SuperstructureConstants.kBackwardsOperatorDrumVelocity),
+            m_kicker.runVoltage(() -> SuperstructureConstants.kBackwardsOperatorKickerVoltage)
+        );
     }
 
     public Command stopShooting() {

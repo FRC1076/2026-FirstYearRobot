@@ -67,7 +67,7 @@ public class RobotContainer {
     private final SamuraiXboxController m_driverController = new SamuraiXboxController(OperatorConstants.kDriverControllerPort);
 
     // The operator's controller
-    private final SamuraiXboxController operatorController = new SamuraiXboxController(OperatorConstants.kOperatorControllerPort);
+    private final SamuraiXboxController m_operatorController = new SamuraiXboxController(OperatorConstants.kOperatorControllerPort);
 
     // The autonomous chooser
     private final SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -177,18 +177,25 @@ public class RobotContainer {
 
         // driver controls 
 
-        m_driverController.povUp().onTrue(superstructure.shootPreset(1));
+        m_driverController.povUp().onTrue(superstructure.shootPreset(1)); // will be: climber post shooting preset
         m_driverController.povRight().onTrue(superstructure.shootPreset(2));
-        m_driverController.povDown().onTrue(superstructure.shootPreset(3));
+        m_driverController.povDown().onTrue(superstructure.shootPreset(3)); // will be: passing preset
         m_driverController.povLeft().onTrue(superstructure.shootPreset(4));
         
-        m_driverController.a().whileTrue(superstructure.agitateHopper());
         m_driverController.y().onTrue(superstructure.stopShooting());
 
         m_driverController.leftTrigger().whileTrue(superstructure.intake(SuperstructureConstants.kIntakeRollerVoltage1)).onFalse(superstructure.stopintake());
         m_driverController.rightTrigger().whileTrue(superstructure.shoot());
 
         m_driverController.start().onTrue(Commands.runOnce(() -> driveSubsystem.rezeroGyro()));
+
+        // operator controls 
+
+        m_operatorController.a().whileTrue(superstructure.agitateHopper());
+
+        m_operatorController.leftTrigger().whileTrue(superstructure.intakeBackwards());
+        m_operatorController.rightTrigger().whileTrue(superstructure.shootBackwards());
+
 
     }
 
