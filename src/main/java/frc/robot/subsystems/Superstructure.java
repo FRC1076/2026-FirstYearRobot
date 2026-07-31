@@ -71,34 +71,26 @@ public class Superstructure {
     public Command shootPreset(int positionNumber) {
         if (positionNumber == 1) {
             return Commands.runOnce(() -> {
-                kickerVoltage = SuperstructureConstants.kInFrontOfClimberKickerVoltage;
-                targetDrumVelocity = SuperstructureConstants.kInFrontOfClimberDrumVelocity1;
+                kickerVoltage = SuperstructureConstants.kKickerVoltage;
+                targetDrumVelocity = SuperstructureConstants.kInFrontOfClimberDrumVelocity;
             })
-            .andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfClimberDrumVelocity1));
+            .andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfClimberDrumVelocity));
         }
 
         else if (positionNumber == 2) {
             return Commands.runOnce(() -> { 
-                kickerVoltage = SuperstructureConstants.kInFrontOfClimberKickerVoltage;
-                targetDrumVelocity = SuperstructureConstants.kInFrontOfClimberDrumVelocity2;
+                kickerVoltage = SuperstructureConstants.kKickerVoltage;
+                targetDrumVelocity = SuperstructureConstants.kNeutralZonePassingDrumVelocity;
             })
-            .andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfClimberDrumVelocity2));
+            .andThen(m_drum.setVelocity(SuperstructureConstants.kNeutralZonePassingDrumVelocity));
         }
 
         else if (positionNumber == 3) {
             return Commands.runOnce(() -> { 
-                kickerVoltage = SuperstructureConstants.kInFrontOfClimberKickerVoltage;
-                targetDrumVelocity = SuperstructureConstants.kInFrontOfClimberDrumVelocity3;
+                kickerVoltage = SuperstructureConstants.kKickerVoltage;
+                targetDrumVelocity = SuperstructureConstants.kOpposingZonePassingDrumVelocity;
             })
-            .andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfClimberDrumVelocity3));
-        }
-
-        else if (positionNumber == 4) {
-            return Commands.runOnce(() -> { 
-                kickerVoltage = SuperstructureConstants.kInFrontOfClimberKickerVoltage;
-                targetDrumVelocity = SuperstructureConstants.kInFrontOfClimberDrumVelocity4;
-            })
-            .andThen(m_drum.setVelocity(SuperstructureConstants.kInFrontOfClimberDrumVelocity4));
+            .andThen(m_drum.setVelocity(SuperstructureConstants.kOpposingZonePassingDrumVelocity));
         }
 
         else {

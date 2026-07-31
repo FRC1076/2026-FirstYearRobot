@@ -177,10 +177,9 @@ public class RobotContainer {
 
         // driver controls 
 
-        m_driverController.povUp().onTrue(superstructure.shootPreset(1)); // will be: climber post shooting preset
-        m_driverController.povRight().onTrue(superstructure.shootPreset(2));
-        m_driverController.povDown().onTrue(superstructure.shootPreset(3)); // will be: passing preset
-        m_driverController.povLeft().onTrue(superstructure.shootPreset(4));
+        m_driverController.povUp().onTrue(superstructure.shootPreset(1)); // climber post shooting preset
+        m_driverController.povLeft().onTrue(superstructure.shootPreset(2)); // neutral zone passing preset
+        m_driverController.povDown().onTrue(superstructure.shootPreset(3)); // opposing zone passing preset
         
         m_driverController.y().onTrue(superstructure.stopShooting());
 
