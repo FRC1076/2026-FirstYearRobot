@@ -2,8 +2,11 @@ package frc.robot.subsystems;
 
 public class SuperstructureConstants {
 
-    public static final double kSlapdownDownSlappingAngleRadians = 3 * Math.PI / 2; // needs tuning
+    public static final double kSlapdownDownSlappingAngleRadians = Math.PI * 2; // needs tuning
     public static final double kSlapdownUpSlappingAngleRadians = 0.0;
+
+    public static final double kSlapdownDownVoltage = 6.0;
+    public static final double kSlapdownUpVoltage = -6.0;
 
     // Intake roller voltages for intaking (TO BE TUNED)
 

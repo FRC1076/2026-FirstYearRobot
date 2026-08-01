@@ -60,6 +60,19 @@ public class RollerIOSparkMax implements RollerIO {
         m_leadConfig.softLimit
             .forwardSoftLimitEnabled(false)
             .reverseSoftLimitEnabled(false);
+
+        m_followConfig
+            .inverted(RollerConstants.kFollowMotorInverted)
+            .idleMode(RollerConstants.kIdleModeSparkMax)
+            .smartCurrentLimit(RollerConstants.kCurrentLimit);
+
+        m_followConfig.encoder
+            .positionConversionFactor(RollerConstants.kPositionFactor)
+            .velocityConversionFactor(RollerConstants.kVelocityFactor);
+
+        m_followConfig.softLimit
+            .forwardSoftLimitEnabled(false)
+            .reverseSoftLimitEnabled(false);
         
         m_followConfig
             .follow(m_leadMotor, RollerConstants.kLeadMotorInverted != RollerConstants.kFollowMotorInverted);

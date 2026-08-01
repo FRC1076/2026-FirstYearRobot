@@ -66,8 +66,9 @@ public class SlapdownSubsystem extends SubsystemBase {
 
     /** Set the voltage applied to the motor with software stops enabled */
     public Command applyVoltage(double volts) {
-        return Commands.runOnce(
+        return Commands.runEnd(
             () -> io.setVoltage(volts),
+            () -> io.setVoltage(0.0),
             this
         );
     }
@@ -86,6 +87,14 @@ public class SlapdownSubsystem extends SubsystemBase {
             () -> io.setPosition(MathUtil.clamp(radians, SlapdownConstants.kMinAngleRadians, SlapdownConstants.kMaxAngleRadians)),
             this
         );
+    }
+
+    public Command stop() {
+        return Commands.run(
+            () -> io.setVoltage(0.0),
+            this
+        );
+
     }
 
     /** Run the slapdown to the supplied position */

@@ -38,10 +38,7 @@ public class Superstructure {
             return m_roller.stop();
         }
         else {
-            return Commands.parallel(
-            m_roller.runVoltage(volts),
-            m_slapdown.applyPosition(SuperstructureConstants.kSlapdownDownSlappingAngleRadians)
-            );
+            return m_roller.setVoltage(volts);
         }
     }
 
@@ -49,8 +46,12 @@ public class Superstructure {
         return m_roller.stop();
     }
 
+    public Command slapdownDown() {
+        return m_slapdown.runVoltage(() -> SuperstructureConstants.kSlapdownDownVoltage);
+    }
+
     public Command slapdownUp() {
-        return m_slapdown.applyPosition(SuperstructureConstants.kSlapdownUpSlappingAngleRadians);
+        return m_slapdown.runVoltage(() -> SuperstructureConstants.kSlapdownUpVoltage);
     }
 
     public Command intakeForAuto(double volts) {

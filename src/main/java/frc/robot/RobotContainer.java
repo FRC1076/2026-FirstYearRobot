@@ -182,7 +182,8 @@ public class RobotContainer {
         m_driverController.povDown().onTrue(superstructure.shootPreset(3)); // opposing zone passing preset
         
         m_driverController.y().onTrue(superstructure.stopShooting());
-        m_driverController.x().onTrue(superstructure.slapdownUp());
+        m_driverController.x().whileTrue(superstructure.slapdownUp());
+        m_driverController.b().whileTrue(superstructure.slapdownDown());
 
         m_driverController.leftTrigger().whileTrue(superstructure.intake(SuperstructureConstants.kIntakeRollerVoltage1)).onFalse(superstructure.stopIntake());
         m_driverController.rightTrigger().whileTrue(superstructure.shoot());
@@ -195,6 +196,8 @@ public class RobotContainer {
 
         m_operatorController.leftTrigger().whileTrue(superstructure.intakeBackwards());
         m_operatorController.rightTrigger().whileTrue(superstructure.shootBackwards());
+
+        // m_operatorController.povDown().whileTrue(superstructure.applySlapdownVolts());
 
 
     }
