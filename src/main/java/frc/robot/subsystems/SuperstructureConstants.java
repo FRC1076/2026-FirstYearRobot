@@ -21,14 +21,14 @@ public class SuperstructureConstants {
     // Autonomous constants
     public static final double kIntakeForAutoSeconds = 3.0;
 
-    public static final int kPositionNumberForAuto = 2; // climber
+    public static final int kPositionNumberForAuto = 1; // climber
     public static final double kSpinUpSecondsForAuto = 2.0;
     public static final double kShootSecondsForAuto = 7.0;
 
     // Operator subsystem reverse constants
 
-    public static final double kBackwardsOperatorDrumVelocity = -150;
-    public static final double kBackwardsOperatorKickerVoltage = -6.0;
+    public static final double kBackwardsOperatorDrumVelocity = -300;
+    public static final double kBackwardsOperatorKickerVoltage = -12.0;
     
     public static final double kBackwardsOperatorRollerVoltage = -8.0;
 
