@@ -9,7 +9,7 @@ public class SlapdownConstants {
     // Current limits
     public static final int kCurrentLimit = 20;
 
-    public static final boolean kInverted = false; 
+    public static final boolean kInverted = true; 
 
     // Gear ratio
     public static final double kMotorToRotationsRatio = 100; 
