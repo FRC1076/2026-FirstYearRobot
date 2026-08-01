@@ -46,14 +46,11 @@ public class Superstructure {
     }
 
     public Command stopIntake () {
-        return Commands.parallel(
-            m_roller.stop(),
-            m_slapdown.applyPosition(SuperstructureConstants.kSlapdownUpSlappingAngleRadians),
-            Commands.runOnce (() -> {
-            kickerVoltage = 0.0;
-            targetDrumVelocity = 0.0;
-            })
-        );
+        return m_roller.stop();
+    }
+
+    public Command slapdownUp() {
+        return m_slapdown.applyPosition(SuperstructureConstants.kSlapdownUpSlappingAngleRadians);
     }
 
     public Command intakeForAuto(double volts) {
@@ -116,7 +113,11 @@ public class Superstructure {
     public Command stopShooting() {
         return Commands.parallel(
             m_drum.stop(),
-            m_kicker.stop()
+            m_kicker.stop(),
+            Commands.runOnce (() -> {
+                kickerVoltage = 0.0;
+                targetDrumVelocity = 0.0;
+            })
         );
     }
 
