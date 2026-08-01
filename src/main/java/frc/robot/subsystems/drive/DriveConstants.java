@@ -5,7 +5,7 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.util.Units;
 
 public class DriveConstants {
-    public static final double maxTranslationSpeedMPS = Units.feetToMeters(10);
+    public static final double maxTranslationSpeedMPS = Units.feetToMeters(15);
     public static final double maxRotationSpeedRadPerSec = 4; // originally set to 2 // Maximum acceptable value appears to be 12
 
     public static final boolean useSpeedScaling = true;
